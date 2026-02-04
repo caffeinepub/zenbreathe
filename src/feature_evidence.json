@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-update-the-player-breathing-circle-sizing-so-that-at-its-maximum-expansion-the-circle-maintains-a-visible-margin-to-the-outer-boundary-the-margin-must-equal-5-of-the-circle-s-maximum-diameter-i-e-when-fully-expanded-the-circle-s-max-diameter-must-be-1-1-1-90-909-of-its-square-container-creating-the-required-margin-ensure-the-circle-never-covers-touches-the-external-border-during-the-inhale-expansion-animation",
-      "featureTitle": "Update the Player breathing circle sizing so that at its maximum expansion the circle maintains a visible margin to the outer boundary: the margin must equal 5% of the circle’s maximum diameter (i.e., when fully expanded, the circle’s max diameter must be 1/1.1 ≈ 90.909% of its square container, creating the required margin). Ensure the circle never covers/touches the external border during the inhale expansion animation.",
+      "featureId": "feature-update-only-the-selected-player-bottom-control-button-xpath-html-1-body-1-div-1-div-1-main-1-div-1-div-3-button-1-so-it-is-conditionally-not-rendered-removed-from-the-dom-for-the-entire-duration-of-an-active-session-including-paused-state-and-it-automatically-reappears-as-soon-as-the-session-fully-ends-i-e-when-the-session-transitions-to-a-non-running-state-including-auto-stop-at-target-duration",
+      "featureTitle": "Update only the selected Player bottom control button (XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1]) so it is conditionally not rendered (removed from the DOM) for the entire duration of an active session (including paused state), and it automatically reappears as soon as the session fully ends (i.e., when the session transitions to a non-running state, including auto-stop at target duration).",
       "files": [
-        "frontend/src/components/BreathingCircle.tsx",
-        "frontend/src/index.css"
+        "frontend/src/pages/Player.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",

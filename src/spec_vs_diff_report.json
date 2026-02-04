@@ -1,15 +1,45 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T22:20:08.632Z",
-  "summary": "REQ-9 appears implemented by capping the breathing circle’s maximum scale at 0.90909 (≈ 1/1.1), ensuring a 5% max-diameter margin to the container border during inhale/hold-top and preventing edge contact across viewports.",
-  "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.74,
+  "generatedAt": "2026-02-04T22:26:27.214Z",
+  "summary": "REQ-9 cannot be verified as implemented from the provided Player.tsx diff snippet because the conditional rendering/removal of the specific bottom control button is not shown. The diff does show additional Player-session behaviors (auto-stop, duration validation, session logging) that were not requested and may exceed the “only change the selected XPath element” constraint.",
+  "missing_requirements": [
+    {
+      "id": "REQ-9",
+      "requirement": "Update only the selected Player bottom control button (XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1]) so it is conditionally not rendered (removed from the DOM) for the entire duration of an active session (including paused state), and it automatically reappears as soon as the session fully ends.",
+      "reason": "The provided diff excerpt of Player.tsx does not include the JSX for the referenced button nor any conditional render that would remove that specific button from the DOM based on session running/paused/end state. With the file truncated, this requirement cannot be confirmed from code evidence.",
+      "evidence": [
+        "frontend/src/pages/Player.tsx (truncated excerpt shows state/effects but not the button JSX/conditional render)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Auto-stop logic tied to target duration using validateDuration/shouldAllowAutoStop and an effect that calls engine.stop() when duration reached.",
+      "reason": "Not requested by REQ-9; REQ-9 is specifically about conditionally removing one existing bottom control button from the DOM during active/paused session and re-showing it when the session ends.",
+      "evidence": [
+        "frontend/src/pages/Player.tsx (imports validateDuration, shouldAllowAutoStop; effect labeled \"Auto-stop when target duration is reached\" calling engine.stop())"
+      ]
+    },
+    {
+      "description": "Session logging to local storage via addBreathingSession when auto-stop triggers.",
+      "reason": "Not requested by REQ-9 and constitutes additional behavior changes beyond the specified button visibility/removal change.",
+      "evidence": [
+        "frontend/src/pages/Player.tsx (imports addBreathingSession; inside auto-stop effect logs session and sets sessionLogged)"
+      ]
+    },
+    {
+      "description": "Added/changed duration parsing/validation from URL search params (validateDuration fallback behavior).",
+      "reason": "Not requested by REQ-9; introduces additional Player behavior unrelated to hiding/removing the specified control button.",
+      "evidence": [
+        "frontend/src/pages/Player.tsx (useEffect parses search.duration, calls validateDuration, sets targetDuration)"
+      ]
+    }
+  ],
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/BreathingCircle.tsx",
-    "frontend/src/index.css",
+    "frontend/src/pages/Player.tsx",
     "project_state.json"
   ]
 }

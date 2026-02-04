@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { ArrowLeft, User, Music, Play, Pause } from 'lucide-react';
+import { ArrowLeft, User, Music, Play } from 'lucide-react';
 import { BreathingPattern } from '../lib/breathingPatterns';
 import { useBreathingEngine } from '../hooks/useBreathingEngine';
 import { useWakeLock } from '../hooks/useWakeLock';
@@ -152,14 +152,6 @@ export default function Player() {
     engine.start();
   };
 
-  const handlePause = () => {
-    engine.pause();
-  };
-
-  const handleResume = () => {
-    engine.resume();
-  };
-
   // Format countdown timer (mm:ss)
   const formatCountdown = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -253,9 +245,9 @@ export default function Player() {
         </div>
       </div>
 
-      {/* Bottom - Control Buttons */}
+      {/* Bottom - Control Button (only visible when session is not running) */}
       <div className="pb-12 px-6 flex justify-center">
-        {!engine.state.isRunning ? (
+        {!engine.state.isRunning && (
           <button
             onClick={handleStart}
             className="px-12 py-4 rounded-full bg-[#C8D5C8] shadow-lg flex items-center gap-3 transition-all active:scale-95 active:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400"
@@ -264,28 +256,6 @@ export default function Player() {
             <Play className="h-5 w-5 text-gray-800" />
             <span className="text-lg font-medium text-gray-800">
               Start
-            </span>
-          </button>
-        ) : engine.state.isPaused ? (
-          <button
-            onClick={handleResume}
-            className="px-12 py-4 rounded-full bg-[#C8D5C8] shadow-lg flex items-center gap-3 transition-all active:scale-95 active:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400"
-            aria-label="Resume breathing exercise"
-          >
-            <Play className="h-5 w-5 text-gray-800" />
-            <span className="text-lg font-medium text-gray-800">
-              Resume
-            </span>
-          </button>
-        ) : (
-          <button
-            onClick={handlePause}
-            className="px-12 py-4 rounded-full bg-[#C8D5C8] shadow-lg flex items-center gap-3 transition-all active:scale-95 active:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400"
-            aria-label="Pause breathing exercise"
-          >
-            <Pause className="h-5 w-5 text-gray-800" />
-            <span className="text-lg font-medium text-gray-800">
-              Pause
             </span>
           </button>
         )}

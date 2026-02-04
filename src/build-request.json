@@ -1,11 +1,11 @@
 {
   "kind": "build_request",
-  "title": "Add 5% max-diameter margin so the breathing circle never touches the outer border",
+  "title": "Conditionally hide Player control button during active session and re-show when session ends",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-9",
-      "text": "Update the Player breathing circle sizing so that at its maximum expansion the circle maintains a visible margin to the outer boundary: the margin must equal 5% of the circle’s maximum diameter (i.e., when fully expanded, the circle’s max diameter must be 1/1.1 ≈ 90.909% of its square container, creating the required margin). Ensure the circle never covers/touches the external border during the inhale expansion animation.",
+      "text": "Update only the selected Player bottom control button (XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1]) so it is conditionally not rendered (removed from the DOM) for the entire duration of an active session (including paused state), and it automatically reappears as soon as the session fully ends (i.e., when the session transitions to a non-running state, including auto-stop at target duration).",
       "target": "frontend",
       "source": {
         "messageIds": [
@@ -13,24 +13,25 @@
           "msg-5"
         ],
         "quotes": [
-          "WHEN THE circle expands, it covers the external border, have 5% margin between the 2",
-          "circle's masximum diameter"
+          "once the session starts, this button will disappear and appear once after the session ends",
+          "2. conditionally hidden",
+          "3. it shoudl appear automatically"
         ]
       },
       "acceptanceCriteria": [
-        "During the inhale (expand) animation, the circle does not touch or overlap the outer boundary of its container.",
-        "The gap between the circle edge (at maximum expansion) and the outer boundary equals 5% of the circle’s maximum diameter (equivalently: circle max diameter is ~90.909% of the container’s square size).",
-        "The change applies consistently across common mobile viewport sizes (no edge contact at max expansion)."
+        "When a breathing session is running, the selected button is not present in the DOM (not just visually hidden).",
+        "When a breathing session is paused, the selected button is not present in the DOM.",
+        "When the session ends (including auto-stop when the configured duration is reached), the selected button becomes visible again automatically without requiring any additional user action.",
+        "No other elements outside the selected XPath are changed as part of this request."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui (read-only).",
-    "Do not edit immutable hook files listed in SYSTEM_CONTEXT."
+    "Apply changes ONLY to the element identified by XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1].",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "Do not change breathing timing, phase logic, or voice/haptics behavior as part of this request.",
-    "Do not redesign the Player screen layout beyond the circle sizing/margin behavior."
+    "Do not address the segmented circumference progress indicator not filling each division every 8 seconds; that must be handled as a separate change."
   ],
   "imageRequirements": {
     "required": [],

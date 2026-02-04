@@ -1,10 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Prevent the Player breathing circle from touching or overlapping the outer border at maximum inhale expansion by enforcing a 5% max-diameter margin.
+**Goal:** Hide the selected Player bottom control button during any active breathing session and automatically show it again when the session ends.
 
 **Planned changes:**
-- Update the Player breathing circle max-size calculation so its maximum diameter is ~90.909% (1/1.1) of its square container size, creating a 5% margin relative to the circle’s maximum diameter.
-- Ensure the inhale (expand) animation respects this max diameter across common mobile viewport sizes so the circle never covers/touches the external border.
+- Update only the selected Player bottom control button so it is not rendered (removed from the DOM) while a session is active, including when paused.
+- Ensure the button automatically reappears immediately when the session transitions to a non-running state, including auto-stop when the configured duration is reached.
 
-**User-visible outcome:** During inhale expansion, the breathing circle consistently stays inside the outer boundary with a visible gap, never touching or overlapping the border.
+**User-visible outcome:** When a breathing session is running or paused, the selected Player control button disappears completely; it reappears automatically as soon as the session ends.
