@@ -45,21 +45,28 @@ export default function SegmentedCircumferenceProgress({
         transform={`rotate(-90 ${center} ${center})`}
       />
       
-      {/* Filled segments */}
-      {filledSegments > 0 && (
-        <circle
-          cx={center}
-          cy={center}
-          r={radius}
-          fill="none"
-          stroke="rgba(0, 0, 0, 0.3)"
-          strokeWidth={strokeWidth}
-          strokeDasharray={`${dashLength} ${gapLength}`}
-          strokeDashoffset={circumference - (filledSegments * segmentLength)}
-          strokeLinecap="butt"
-          transform={`rotate(-90 ${center} ${center})`}
-        />
-      )}
+      {/* Filled segments - render each one individually */}
+      {Array.from({ length: filledSegments }).map((_, index) => {
+        // Calculate the offset for this specific segment
+        // Each segment starts at index * segmentLength from the beginning
+        const segmentOffset = circumference - (index * segmentLength) - dashLength;
+        
+        return (
+          <circle
+            key={index}
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="none"
+            stroke="rgba(0, 0, 0, 0.3)"
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${dashLength} ${circumference - dashLength}`}
+            strokeDashoffset={segmentOffset}
+            strokeLinecap="butt"
+            transform={`rotate(-90 ${center} ${center})`}
+          />
+        );
+      })}
     </svg>
   );
 }

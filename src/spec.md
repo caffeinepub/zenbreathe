@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Hide the selected Player bottom control button during any active breathing session and automatically show it again when the session ends.
+**Goal:** Fix the segmented circumference progress indicator so it fills exactly one segment every 8 seconds of elapsed session time.
 
 **Planned changes:**
-- Update only the selected Player bottom control button so it is not rendered (removed from the DOM) while a session is active, including when paused.
-- Ensure the button automatically reappears immediately when the session transitions to a non-running state, including auto-stop when the configured duration is reached.
+- Adjust segmented circumference progress fill logic so the filled segment count increments by 1 at each 8-second boundary (8s, 16s, 24s, …) up to the computed total segment count (totalDurationSeconds/8, rounded up).
+- Ensure the filled segment count is monotonic with elapsed time and never exceeds the total number of segments.
+- Limit changes strictly to the segmented circumference timing/fill behavior without altering Player layout, breathing circle sizing, colors, typography, or other Player behavior.
 
-**User-visible outcome:** When a breathing session is running or paused, the selected Player control button disappears completely; it reappears automatically as soon as the session ends.
+**User-visible outcome:** During a session, the segmented circumference indicator fills one additional segment every 8 seconds, accurately reflecting elapsed time without any other visual or behavioral changes to the Player.

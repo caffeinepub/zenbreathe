@@ -1,22 +1,21 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Hide Player bottom control button during active session",
+  "title": "Fix segmented circumference progress to advance exactly one segment every 8 seconds",
   "requirements": [
     {
       "id": "REQ-9",
-      "summary": "Conditionally remove the Player bottom control button from the DOM while a session is active (running or paused) and re-render it when the session ends.",
+      "summary": "Adjust segmented circumference progress fill so exactly one full segment becomes filled each 8 seconds of elapsed session time without altering any other Player visuals or behavior.",
       "acceptanceCriteria": [
-        "When a breathing session is running, the selected button is not present in the DOM (not just visually hidden).",
-        "When a breathing session is paused, the selected button is not present in the DOM.",
-        "When the session ends (including auto-stop when the configured duration is reached), the selected button becomes visible again automatically without requiring any additional user action.",
-        "No other elements outside the selected XPath are changed as part of this request."
+        "For totalDurationSeconds = 32 (totalSegments = 4), the indicator shows 0 filled segments for elapsedSeconds in [0, 8), 1 filled segment for elapsedSeconds in [8, 16), 2 for [16, 24), 3 for [24, 32), and 4 for elapsedSeconds >= 32.",
+        "For any totalDurationSeconds > 0, the filled segment count never exceeds totalSegments and never decreases as elapsedSeconds increases.",
+        "No changes are made to Player layout, breathing circle sizing, colors, typography, or any other Player flow besides the segmented circumference progress fill/timing behavior."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/Player.tsx",
+          "path": "frontend/src/components/SegmentedCircumferenceProgress.tsx",
           "operation": "modify",
-          "description": "Update only the bottom control button within the existing bottom controls container so it is rendered only when engine.state.isRunning is false; when engine.state.isRunning is true (including paused), render nothing in place of the button so it is removed from the DOM, and allow it to reappear automatically once the session transitions back to non-running (e.g., manual stop via navigation or auto-stop at target duration)."
+          "description": "Update the fill calculation and SVG rendering so the filled portion advances in discrete steps of exactly one full segment per 8 seconds (using totalSegments = ceil(totalDurationSeconds/8), filledSegments = clamp(floor(elapsedSeconds/8), 0..totalSegments)). Render filled segments in a way that guarantees whole-segment increments (e.g., draw each filled segment as its own dash positioned per segment index) while preserving all existing sizing, layout, colors, and overall appearance."
         }
       ]
     }

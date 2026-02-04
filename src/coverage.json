@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T22:26:27.257Z",
+  "generatedAt": "2026-02-04T22:47:45.169Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,13 +12,13 @@
     "items": [
       {
         "id": "REQ-9",
-        "summary": "Update only the selected Player bottom control button (XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1]) so it is conditionally not rendered (removed from the DOM) for the entire duration of an active session (including paused state), and it automatically reappears as soon as the session fully ends (i.e., when the session transitions to a non-running state, including auto-stop at target duration).",
+        "summary": "Update the segmented circumference progress indicator so the filled portion advances by exactly one segment every 8 seconds of elapsed session time (i.e., segment 1 fills at 8s, segment 2 at 16s, etc.), up to the total number of segments (totalDurationSeconds/8, rounded up). This change must only affect the segmented circumference timing/fill behavior and must not change the breathing circle’s size, layout, colors, or other Player behavior.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/Player.tsx"
+          "frontend/src/components/SegmentedCircumferenceProgress.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/Player.tsx"
+          "frontend/src/components/SegmentedCircumferenceProgress.tsx"
         ]
       }
     ]
@@ -28,7 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/pages/Player.tsx",
+    "frontend/src/components/SegmentedCircumferenceProgress.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

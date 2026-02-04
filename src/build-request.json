@@ -1,37 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Conditionally hide Player control button during active session and re-show when session ends",
+  "title": "Fix segmented circumference progress timing (fill exactly one segment every 8 seconds)",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-9",
-      "text": "Update only the selected Player bottom control button (XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1]) so it is conditionally not rendered (removed from the DOM) for the entire duration of an active session (including paused state), and it automatically reappears as soon as the session fully ends (i.e., when the session transitions to a non-running state, including auto-stop at target duration).",
+      "text": "Update the segmented circumference progress indicator so the filled portion advances by exactly one segment every 8 seconds of elapsed session time (i.e., segment 1 fills at 8s, segment 2 at 16s, etc.), up to the total number of segments (totalDurationSeconds/8, rounded up). This change must only affect the segmented circumference timing/fill behavior and must not change the breathing circle’s size, layout, colors, or other Player behavior.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-3",
-          "msg-5"
+          "msg-4",
+          "msg-6",
+          "msg-8"
         ],
         "quotes": [
-          "once the session starts, this button will disappear and appear once after the session ends",
-          "2. conditionally hidden",
-          "3. it shoudl appear automatically"
+          "just the circumference thing",
+          "YES",
+          "proceeding with the build that applies ONLY the segmented‑circumference timing fix."
         ]
       },
       "acceptanceCriteria": [
-        "When a breathing session is running, the selected button is not present in the DOM (not just visually hidden).",
-        "When a breathing session is paused, the selected button is not present in the DOM.",
-        "When the session ends (including auto-stop when the configured duration is reached), the selected button becomes visible again automatically without requiring any additional user action.",
-        "No other elements outside the selected XPath are changed as part of this request."
+        "For totalDurationSeconds = 32 (totalSegments = 4), the indicator shows 0 filled segments for elapsedSeconds in [0, 8), 1 filled segment for elapsedSeconds in [8, 16), 2 for [16, 24), 3 for [24, 32), and 4 for elapsedSeconds >= 32.",
+        "For any totalDurationSeconds > 0, the filled segment count never exceeds totalSegments and never decreases as elapsedSeconds increases.",
+        "No changes are made to Player layout, breathing circle sizing, colors, typography, or any other Player flow besides the segmented circumference progress fill/timing behavior."
       ]
     }
   ],
   "constraints": [
-    "Apply changes ONLY to the element identified by XPath: /html[1]/body[1]/div[1]/div[1]/main[1]/div[1]/div[3]/button[1].",
-    "Use English for any user-facing text."
+    "Frontend-only change: implement only the segmented circumference progress timing/fill fix.",
+    "Do not modify any files under frontend/src/components/ui or any paths listed in frontend.immutablePaths."
   ],
   "nonGoals": [
-    "Do not address the segmented circumference progress indicator not filling each division every 8 seconds; that must be handled as a separate change."
+    "Do not address other pending Player fixes (circle sizing, phase text placement, Start/Stop behavior, pre-session intro, voice guidance, etc.).",
+    "Do not add or change backend canister functionality."
   ],
   "imageRequirements": {
     "required": [],

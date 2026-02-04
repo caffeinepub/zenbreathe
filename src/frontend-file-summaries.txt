@@ -33,5 +33,5 @@
   "frontend/src/pages/About.tsx": "About Us page with app description, placeholder premium upgrade CTA with dummy pricing, quick settings preview, and footer with version and caffeine.ai attribution.",
   "frontend/src/pages/Settings.tsx": "Settings page with placeholder controls for audio settings, haptic feedback, notifications, display preferences, and data management options organized in card sections.",
   "frontend/src/lib/playerDurationGuards.ts": "Duration validation and auto-stop guard utilities that validate incoming duration values, apply safe fallbacks with console warnings, and prevent premature auto-stop in multi-minute sessions.",
-  "frontend/src/components/SegmentedCircumferenceProgress.tsx": "SVG-based segmented ring component that renders N equal segments (N = ceil(totalDurationSeconds/8)) and darkens exactly floor(elapsedSeconds/8) segments with instant jumps at 8-second boundaries."
+  "frontend/src/components/SegmentedCircumferenceProgress.tsx": "SVG-based segmented ring component that renders N equal segments (N = ceil(totalDurationSeconds/8)) and draws exactly floor(elapsedSeconds/8) filled segments individually, ensuring whole-segment increments with instant jumps at 8-second boundaries."
 }
