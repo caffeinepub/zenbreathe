@@ -46,6 +46,21 @@ export function speakAsync(text: string): Promise<void> {
 }
 
 /**
+ * Queued speak function that does NOT cancel ongoing speech
+ * Used for countdown numbers that should play in sequence
+ */
+export function speakQueued(text: string): void {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = currentVolume;
+    
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+/**
  * Cancel any ongoing speech
  */
 export function cancelSpeech(): void {

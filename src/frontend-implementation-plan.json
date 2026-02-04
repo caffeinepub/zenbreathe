@@ -1,26 +1,27 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Player layout: enforce 5vw breathing-circle gap from side volume sliders",
+  "title": "Spoken 4-3-2-1 countdown synced to session-start breathing circle countdown",
   "requirements": [
     {
       "id": "REQ-9",
-      "summary": "Adjust the Player screen so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always keeps at least a 5vw horizontal gap from each slider card while remaining centered and fully visible.",
+      "summary": "Speak “4 3 2 1” in sync with the breathing circle’s initial visible countdown ticks at session start, respecting voice volume and canceling speech on pause/stop.",
       "acceptanceCriteria": [
-        "On the Player page, the breathing circle does not overlap either vertical volume slider card at any time.",
-        "The minimum horizontal gap between the breathing circle edge and each slider card is >= 5vw (5% of the viewport width).",
-        "The breathing circle remains centered between the two slider controls and remains fully visible within the viewport (no clipping)."
+        "When the user taps Start in the Player, the breathing circle begins its normal countdown and the app speaks “4”, then “3”, then “2”, then “1” aligned to the visible countdown ticks at the start of the session.",
+        "The spoken 4-3-2-1 countdown occurs as part of the breathing circle countdown behavior (not as a separate screen or pre-session intro).",
+        "The spoken countdown respects the existing voice guidance volume control.",
+        "If the session is paused or stopped during the initial countdown, any ongoing speech is canceled and the countdown speech does not continue while paused/stopped."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/Player.tsx",
+          "path": "frontend/src/lib/voiceGuidance.ts",
           "operation": "modify",
-          "description": "Refactor the main Player content layout from absolute-positioned side controls to a 3-column grid or flex layout that places left slider, circle, and right slider in-flow with a horizontal gap of at least 5vw between columns; ensure the circle stays centered and side controls remain vertically centered without overlap across screen sizes/orientations."
+          "description": "Add a queued/non-interrupting speech helper (e.g., a function that speaks without canceling existing utterances) so the 4-3-2-1 countdown can play reliably on one-second ticks while preserving existing interrupting behavior for other voice prompts."
         },
         {
-          "path": "frontend/src/components/BreathingCircle.tsx",
+          "path": "frontend/src/hooks/useBreathingEngine.ts",
           "operation": "modify",
-          "description": "Make the BreathingCircle size responsive to its container (e.g., use full width with a max size and an aspect-square/rounded-full shape) so it can shrink as needed to preserve the >=5vw gap from side slider cards while staying fully visible; ensure the countdown text scales or wraps safely to avoid clipping when the circle shrinks."
+          "description": "Integrate a session-start spoken countdown into the existing breathing timing loop: track which initial countdown numbers have been spoken, speak “4 3 2 1” aligned to the circle’s displayed Math.ceil(timeRemaining) ticks at the very beginning of the session (without adding any new intro flow), suppress/avoid overlapping initial phase announcement as needed, and ensure pause/stop cancel any ongoing speech and prevent further countdown speech while paused/stopped."
         }
       ]
     }

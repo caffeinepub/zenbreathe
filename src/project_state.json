@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 28,
+  "projectStateVersion": 34,
   "summary": "ZenBreathe is a minimalist React + Tailwind breathing companion (mobile/PWA-oriented) featuring preset and custom breathing patterns, a full-screen guided breathing player with an animated countdown circle, a pre-session intro sequence with spoken prompts, voice guidance and haptics during phases, wake-lock support, optional ambient audio (rain/waves), local-only persistence for session history and breath-hold attempts, and a stats dashboard (weekly minutes, breath-hold trend, recent sessions). The repo also contains scaffolding for Internet Identity authentication and an ICP backend actor, but the included Motoko canister is currently empty.",
   "existing_features": [
     {
@@ -258,8 +258,8 @@
       "version": 1
     },
     {
-      "id": "feature-update-the-player-screen-layout-so-the-breathingcircle-never-overlaps-the-left-right-verticalvolumecontrol-sliders-and-always-maintains-a-proportional-gap-ensure-there-is-at-least-a-5-of-viewport-width-5vw-margin-between-the-circle-edge-and-each-slider-container-on-all-supported-screen-sizes-orientations",
-      "title": "Update the Player screen layout so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always maintains a proportional gap: ensure there is at least a 5% of viewport width (5vw) margin between the circle edge and each slider container on all supported screen sizes/orientations.",
+      "id": "feature-add-voice-guidance-that-speaks-the-numbers-4-3-2-1-in-sync-with-the-breathing-circle-countdown-at-the-very-start-of-a-guided-breathing-session-i-e-during-the-on-circle-countdown-at-the-beginning-of-the-first-inhale-exhale-timing-and-do-not-implement-it-as-a-separate-pre-session-intro-flow",
+      "title": "Add voice guidance that speaks the numbers “4 3 2 1” in sync with the breathing circle countdown at the very start of a guided breathing session (i.e., during the on-circle countdown at the beginning of the first inhale/exhale timing), and do not implement it as a separate pre-session intro flow.",
       "reqIds": [
         "REQ-9"
       ],
@@ -288,6 +288,12 @@
     {
       "id": "AR-4",
       "summary": "Adjust Player UI so the breathing circle is smaller and does not overlap the volume slider bars",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add spoken voice guidance for the on-circle 4-3-2-1 countdown as part of the breathing circle countdown at the start of the guided session (not a separate pre-session intro)",
       "reqIds": [],
       "status": "pending"
     }

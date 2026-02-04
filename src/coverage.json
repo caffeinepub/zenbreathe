@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T21:59:00.578Z",
+  "generatedAt": "2026-02-04T22:03:58.530Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,15 +12,15 @@
     "items": [
       {
         "id": "REQ-9",
-        "summary": "Update the Player screen layout so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always maintains a proportional gap: ensure there is at least a 5% of viewport width (5vw) margin between the circle edge and each slider container on all supported screen sizes/orientations.",
+        "summary": "Add voice guidance that speaks the numbers “4 3 2 1” in sync with the breathing circle countdown at the very start of a guided breathing session (i.e., during the on-circle countdown at the beginning of the first inhale/exhale timing), and do not implement it as a separate pre-session intro flow.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/Player.tsx",
-          "frontend/src/components/BreathingCircle.tsx"
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts"
         ],
         "matchedFiles": [
-          "frontend/src/pages/Player.tsx",
-          "frontend/src/components/BreathingCircle.tsx"
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts"
         ]
       }
     ]
@@ -30,8 +30,8 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/BreathingCircle.tsx",
-    "frontend/src/pages/Player.tsx",
+    "frontend/src/hooks/useBreathingEngine.ts",
+    "frontend/src/lib/voiceGuidance.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
