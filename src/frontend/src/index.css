@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+        /* Light theme colors - minimalist */
+        --background: 0.982 0 0; /* #FAFAFA */
+        --foreground: 0.235 0.015 254; /* #1E293B charcoal */
+        --card: 1 0 0; /* #FFFFFF */
+        --card-foreground: 0.235 0.015 254;
+        --popover: 1 0 0;
+        --popover-foreground: 0.235 0.015 254;
+        --primary: 0.235 0.015 254;
+        --primary-foreground: 1 0 0;
+        --secondary: 0.96 0 0;
+        --secondary-foreground: 0.235 0.015 254;
+        --muted: 0.96 0 0;
+        --muted-foreground: 0.556 0.012 254;
+        --accent: 0.96 0 0;
+        --accent-foreground: 0.235 0.015 254;
+        --destructive: 0.577 0.245 27.325;
+        --destructive-foreground: 1 0 0;
+        --border: 0.922 0 0;
+        --input: 0.922 0 0;
+        --ring: 0.708 0.012 254;
+        
+        /* Breathing phase colors */
+        --inhale: 0.768 0.141 180.4; /* #2DD4BF */
+        --exhale: 0.656 0.214 6.8; /* #FB7185 */
+        --hold: 0.656 0.028 254; /* #94A3B8 */
+        
+        /* Exercise tile colors - soft pastels */
+        --tile-equal: 0.92 0.05 150; /* soft mint green */
+        --tile-box: 0.92 0.05 220; /* soft sky blue */
+        --tile-478: 0.92 0.05 40; /* soft peach */
+        --tile-test: 0.92 0.05 330; /* soft lavender pink */
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    
+    /* Base typography safeguards */
+    h1, h2, h3, h4, h5, h6 {
+        @apply break-words;
+    }
+    
+    p {
+        @apply break-words;
+    }
+    
+    /* Prevent horizontal overflow */
+    * {
+        @apply max-w-full;
+    }
+}
+
+/* Breathing circle animations - smooth and gentle */
+@keyframes breathe-in {
+    from {
+        transform: scale(0.75);
+        opacity: 0.95;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes breathe-out {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.75);
+        opacity: 0.95;
+    }
+}
+
+@keyframes breathe-hold {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-breathe-in {
+    animation: breathe-in ease-in-out forwards;
+}
+
+.animate-breathe-out {
+    animation: breathe-out ease-in-out forwards;
+}
+
+.animate-breathe-hold {
+    animation: breathe-hold ease-in-out forwards;
+}

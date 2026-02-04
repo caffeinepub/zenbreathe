@@ -1,0 +1,24 @@
+{
+  "name": "ZenBreathe",
+  "short_name": "ZenBreathe",
+  "description": "Minimalist breathing exercises and meditation app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FAFAFA",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/generated/zenbreathe-icon.dim_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/generated/zenbreathe-maskable.dim_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

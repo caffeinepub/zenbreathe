@@ -1,0 +1,37 @@
+{
+  "kind": "build_request",
+  "title": "Reduce breathing circle size to maintain a 5% viewport-width margin from side volume sliders",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-9",
+      "text": "Update the Player screen layout so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always maintains a proportional gap: ensure there is at least a 5% of viewport width (5vw) margin between the circle edge and each slider container on all supported screen sizes/orientations.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "5%"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On the Player page, the breathing circle does not overlap either vertical volume slider card at any time.",
+        "The minimum horizontal gap between the breathing circle edge and each slider card is >= 5vw (5% of the viewport width).",
+        "The breathing circle remains centered between the two slider controls and remains fully visible within the viewport (no clipping)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under frontend/src/components/ui (compose existing UI components instead).",
+    "Do not modify any paths listed in SYSTEM_CONTEXT.frontend.immutablePaths."
+  ],
+  "nonGoals": [
+    "Do not change breathing engine timing, voice guidance logic, haptics, ambient audio behavior, or session logging as part of this request.",
+    "Do not redesign the Player page beyond the circle sizing/spacing adjustment."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

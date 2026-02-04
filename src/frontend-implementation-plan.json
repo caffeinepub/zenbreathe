@@ -1,0 +1,28 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Player layout: enforce 5vw breathing-circle gap from side volume sliders",
+  "requirements": [
+    {
+      "id": "REQ-9",
+      "summary": "Adjust the Player screen so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always keeps at least a 5vw horizontal gap from each slider card while remaining centered and fully visible.",
+      "acceptanceCriteria": [
+        "On the Player page, the breathing circle does not overlap either vertical volume slider card at any time.",
+        "The minimum horizontal gap between the breathing circle edge and each slider card is >= 5vw (5% of the viewport width).",
+        "The breathing circle remains centered between the two slider controls and remains fully visible within the viewport (no clipping)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Player.tsx",
+          "operation": "modify",
+          "description": "Refactor the main Player content layout from absolute-positioned side controls to a 3-column grid or flex layout that places left slider, circle, and right slider in-flow with a horizontal gap of at least 5vw between columns; ensure the circle stays centered and side controls remain vertically centered without overlap across screen sizes/orientations."
+        },
+        {
+          "path": "frontend/src/components/BreathingCircle.tsx",
+          "operation": "modify",
+          "description": "Make the BreathingCircle size responsive to its container (e.g., use full width with a max size and an aspect-square/rounded-full shape) so it can shrink as needed to preserve the >=5vw gap from side slider cards while staying fully visible; ensure the countdown text scales or wraps safely to avoid clipping when the circle shrinks."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 28,
+  "summary": "ZenBreathe is a minimalist React + Tailwind breathing companion (mobile/PWA-oriented) featuring preset and custom breathing patterns, a full-screen guided breathing player with an animated countdown circle, a pre-session intro sequence with spoken prompts, voice guidance and haptics during phases, wake-lock support, optional ambient audio (rain/waves), local-only persistence for session history and breath-hold attempts, and a stats dashboard (weekly minutes, breath-hold trend, recent sessions). The repo also contains scaffolding for Internet Identity authentication and an ICP backend actor, but the included Motoko canister is currently empty.",
+  "existing_features": [
+    {
+      "id": "IF-1",
+      "title": "SPA routing with shared layout and bottom tab navigation",
+      "synonyms": [
+        "TanStack Router app shell",
+        "Layout + tabs"
+      ],
+      "description": "Implements routes for Home (/), Player (/player), Test (/test), Stats (/stats), Custom (/custom), About (/about), and Settings (/settings). The Layout provides a header and a fixed bottom tab bar (Default/Custom/Progress) that is hidden on the Player route, with a centered max-width main content area.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-2",
+      "title": "Preset breathing patterns catalog",
+      "synonyms": [
+        "Built-in exercises",
+        "PRESET_PATTERNS"
+      ],
+      "description": "Defines built-in breathing patterns (Equal Breathing, Box Breathing, 4-7-8 Deep Sleep) with inhale/hold/exhale timings used to launch sessions.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-3",
+      "title": "Home exercise cards grid and navigation to Player/Test",
+      "synonyms": [
+        "Exercise tiles",
+        "Home screen"
+      ],
+      "description": "Home page renders a responsive grid of exercise cards for preset patterns plus a Breath Holding Test entry; selecting a breathing card navigates to Player with pattern/color/duration params, while the test card navigates to the Test page.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-4",
+      "title": "Exercise card interaction model with duration dialog",
+      "synonyms": [
+        "Tap-to-start cards",
+        "Keyboard accessible tiles",
+        "Change Duration modal"
+      ],
+      "description": "Exercise cards are clickable/keyboard-activatable (Enter/Space). Each card includes an Info icon button that does not trigger start, and a Change Duration button that opens a dialog to set the exercise duration in seconds.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-5",
+      "title": "Per-exercise duration preferences with local persistence",
+      "synonyms": [
+        "usePerExerciseDuration",
+        "Per-card duration"
+      ],
+      "description": "Supports storing per-exercise target durations (default 300s) via a React hook and localStorage-backed getters/setters.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-6",
+      "title": "Custom breathing pattern editor and launch flow",
+      "synonyms": [
+        "Custom page",
+        "CustomPatternForm"
+      ],
+      "description": "Provides a Custom page with numeric inputs (0.5s step) for inhale/hold/exhale/hold durations, then launches Player with the custom pattern serialized into URL search params.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-7",
+      "title": "Breathing engine hook with phase state machine",
+      "synonyms": [
+        "useBreathingEngine",
+        "Phase scheduler"
+      ],
+      "description": "Runs a repeating inhale/holdTop/exhale/holdBottom cycle with 100ms ticking, per-phase durations, skipping zero-duration phases, tracking total elapsed time, and emitting phase side effects (speech + vibration).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Voice guidance utilities with configurable volume and async sequencing",
+      "synonyms": [
+        "SpeechSynthesis guidance",
+        "speakAsync"
+      ],
+      "description": "Implements speech helpers using the browser SpeechSynthesis API, including a global volume setter, immediate speak(), promise-based speakAsync() (resolves on end/error), and cancelSpeech() for cleanup.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "Haptic feedback hook",
+      "synonyms": [
+        "useHaptics",
+        "Vibration API"
+      ],
+      "description": "Provides a simple vibrate(duration) helper that uses navigator.vibrate when available (used on phase transitions).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-10",
+      "title": "Animated breathing circle with countdown and override text",
+      "synonyms": [
+        "BreathingCircle",
+        "Phase-based animations"
+      ],
+      "description": "Renders a large circle that animates scaling for inhale/exhale/hold phases, chooses a phase-based color (or a provided themeColor), and displays a large countdown number (or an overrideText, e.g., intro countdown).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-11",
+      "title": "Full-screen Player session runner with volume controls and session logging",
+      "synonyms": [
+        "Player page",
+        "Session runner"
+      ],
+      "description": "Player reads pattern/color/duration from URL, provides a full-screen UI with back/exit handling, an animated breathing circle, vertical sliders for voice and ambient volume, attempts to auto-stop at the target duration, and logs completed/ended sessions to localStorage.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-12",
+      "title": "Pre-session intro flow with countdown, spoken prompts, and automatic start",
+      "synonyms": [
+        "Auto-start after intro",
+        "Intro countdown and prompts"
+      ],
+      "description": "On entering Player (after pattern loads), runs an intro sequence: shows an on-circle countdown 4→1 (1s per step), waits 1s, speaks “Relax and get comfortable” while showing matching text below the circle, waits 1s, then speaks “Focus on your breathing” while showing matching text; after completion it automatically starts the breathing engine. Intro speech is cancelled on unmount/exit.",
+      "reqIds": [
+        "REQ-7",
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-13",
+      "title": "Ambient audio controller (rain/waves) with exclusive playback",
+      "synonyms": [
+        "AmbientAudioController",
+        "Soundscapes"
+      ],
+      "description": "Implements a controller that loads looping rain and waves audio, ensures only one plays at a time, and supports global volume adjustment with safe handling of autoplay failures.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-14",
+      "title": "Screen wake lock support during active sessions",
+      "synonyms": [
+        "useWakeLock",
+        "Keep screen on"
+      ],
+      "description": "Requests a screen wake lock while a breathing session is active and releases it when inactive/unmounted, with safe fallback when unsupported.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-15",
+      "title": "Local persistence for breathing sessions, breath-hold records, and per-exercise durations",
+      "synonyms": [
+        "localStorageStore",
+        "History persistence"
+      ],
+      "description": "Persists breathing sessions (timestamp, exerciseName, duration ms), breath-hold records (timestamp, duration ms), and per-exercise duration preferences via centralized localStorage keys and safe JSON parsing with silent failure behavior.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-16",
+      "title": "Breath Hold Test stopwatch with all-time record tracking",
+      "synonyms": [
+        "Test page",
+        "Breath hold timer"
+      ],
+      "description": "Implements a start/stop timer for breath-holding attempts, saves attempts to localStorage, and displays the all-time best duration with HH:MM:SS formatting.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-17",
+      "title": "Stats derivations and dashboard (weekly minutes, breath-hold trend, recent sessions)",
+      "synonyms": [
+        "Progress tab",
+        "Analytics"
+      ],
+      "description": "Computes and displays last-7-days breathing minutes, breath-hold progression over time, and the 10 most recent breathing sessions using localStorage data and formatting helpers.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-18",
+      "title": "Lightweight chart components for stats visualization",
+      "synonyms": [
+        "WeeklyMinutesBarChart",
+        "BreathHoldLineChart"
+      ],
+      "description": "Includes a simple bar chart for weekly minutes and an SVG line chart for breath-hold seconds, both scaling based on the dataset range and showing date labels.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-19",
+      "title": "Reusable session history table component",
+      "synonyms": [
+        "SessionList"
+      ],
+      "description": "Provides a reusable table view for sessions with responsive typography, horizontal overflow handling, and formatted date/duration display.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-20",
+      "title": "About page with premium upsell placeholder and settings preview",
+      "synonyms": [
+        "About screen"
+      ],
+      "description": "Renders app description content, a non-functional premium upgrade CTA with feature bullets and placeholder pricing, a quick settings preview, and version/footer attribution.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-21",
+      "title": "Settings page UI shell with toggles and data actions (placeholder)",
+      "synonyms": [
+        "Settings placeholders"
+      ],
+      "description": "Provides structured settings sections (audio, haptics, notifications, display) with Switch controls, plus Export/Clear data action buttons; controls are currently not wired to persisted behavior.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-22",
+      "title": "PWA installation metadata and service worker registration utility",
+      "synonyms": [
+        "manifest.json",
+        "registerServiceWorker"
+      ],
+      "description": "Includes a web app manifest for standalone install (icons/theme/start_url) and a helper to register /sw.js on window load for offline/install support.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-23",
+      "title": "Internet Identity authentication provider and ICP actor hook scaffolding",
+      "synonyms": [
+        "InternetIdentityProvider",
+        "useActor"
+      ],
+      "description": "Provides an Internet Identity context (AuthClient) for login/logout/status and a React Query-backed hook to create an authenticated or anonymous ICP actor keyed by the current principal, invalidating dependent queries when identity changes.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-player-screen-layout-so-the-breathingcircle-never-overlaps-the-left-right-verticalvolumecontrol-sliders-and-always-maintains-a-proportional-gap-ensure-there-is-at-least-a-5-of-viewport-width-5vw-margin-between-the-circle-edge-and-each-slider-container-on-all-supported-screen-sizes-orientations",
+      "title": "Update the Player screen layout so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always maintains a proportional gap: ensure there is at least a 5% of viewport width (5vw) margin between the circle edge and each slider container on all supported screen sizes/orientations.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Revert/rollback to the older working version because breathing playback is fully broken in the current deployed build",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Fix regressions since last broken build: Stop button in main Player session does nothing, phase voice guidance missing during inhale/exhale, and pre-session intro flow is missing (shows Start button instead)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Update Player controls/flow: session should start immediately when tapping Start (no pre-session intro), restore inhale/exhale voice prompts, and make Stop pause the session (instead of ending)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Adjust Player UI so the breathing circle is smaller and does not overlap the volume slider bars",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "architectural_notes": [
+    "Frontend is a React SPA using TanStack Router with a shared Layout (header + bottom tab navigation) and an Outlet-based route tree.",
+    "UI is built with TailwindCSS and shadcn/ui primitives; design tokens are driven by CSS variables (OKLCH) and Tailwind theme extensions.",
+    "Breathing playback is encapsulated in a reusable hook (useBreathingEngine) implementing a phase state machine driven by a 100ms interval tick.",
+    "Browser capabilities are wrapped in small helpers/hooks: SpeechSynthesis (voice guidance), Vibration API (haptics), Wake Lock API (keep screen on), and HTMLAudioElement (ambient audio).",
+    "Player configuration is passed through URL search params (pattern serialized as JSON, plus optional color and duration).",
+    "Local persistence is implemented via a thin localStorage store module with centralized storage keys and simple TypeScript record types.",
+    "Stats are computed via pure derivation helpers (e.g., last 7 days minutes, breath-hold chart points, recent sessions), then rendered via lightweight chart components.",
+    "ICP scaffolding uses an InternetIdentityProvider (AuthClient) and a React Query-backed useActor hook keyed by principal to recreate actors when identity changes.",
+    "Rollback request clarified: revert to the version immediately before Draft 13 and undo only the most recent changes (not a full repo/history rollback).",
+    "User preference update: Player should not run a pre-session intro by default; session begins immediately on Start."
+  ],
+  "known_issues": [
+    "Player auto-stop compares engine.state.totalElapsed (milliseconds) against targetDuration passed from Home (seconds), causing sessions to end far too early unless units are corrected.",
+    "Ambient audio mode (off/rain/waves) exists in Player state, but there is no UI to change ambientMode, so rain/waves playback is unreachable in normal use.",
+    "Home exercise card Info buttons stop propagation but do not open any info dialog/screen (no implemented info UX).",
+    "Service worker registration helper exists but is not invoked from current frontend/src/main.tsx; additionally /sw.js is not present in this snapshot.",
+    "Settings toggles are placeholder UI only (not persisted and not wired to actual behaviors like voice/haptics/wake lock/ambient audio).",
+    "Backend canister (backend/main.mo) is an empty actor; no server-side features are implemented.",
+    "localStorage persistence has no schema validation/migrations and stored arrays can grow without bounds.",
+    "App naming is inconsistent across surfaces (e.g., manifest/title uses ZenBreathe while header/About use “Breathe”).",
+    "There are two global CSS files (frontend/src/index.css and frontend/index.css); only src/index.css is imported, which may leave dead/confusing styles.",
+    "Current deployed build reportedly has fully broken breathing playback (user requesting rollback to older version)."
+  ],
+  "isFixRequest": true,
+  "gameProjectType": "none",
+  "projectName": "ZenBreathe",
+  "clarification_mode": "thinking",
+  "clarification_rounds": 0
+}

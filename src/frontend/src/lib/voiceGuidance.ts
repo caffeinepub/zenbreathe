@@ -1,0 +1,55 @@
+let currentVolume = 1.0;
+
+export function setVoiceVolume(volume: number): void {
+  // Volume should be between 0 and 1
+  currentVolume = Math.max(0, Math.min(1, volume));
+}
+
+export function speak(text: string): void {
+  if ('speechSynthesis' in window) {
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = currentVolume;
+    
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+/**
+ * Promise-based speak function that resolves when speech completes
+ * Useful for sequencing voice prompts in intro flows
+ */
+export function speakAsync(text: string): Promise<void> {
+  return new Promise((resolve) => {
+    if (!('speechSynthesis' in window)) {
+      resolve();
+      return;
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = currentVolume;
+    
+    utterance.onend = () => resolve();
+    utterance.onerror = () => resolve();
+    
+    window.speechSynthesis.speak(utterance);
+  });
+}
+
+/**
+ * Cancel any ongoing speech
+ */
+export function cancelSpeech(): void {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+}

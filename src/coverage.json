@@ -1,0 +1,40 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-04T21:59:00.578Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 1,
+    "implemented": 1,
+    "items": [
+      {
+        "id": "REQ-9",
+        "summary": "Update the Player screen layout so the BreathingCircle never overlaps the left/right VerticalVolumeControl sliders and always maintains a proportional gap: ensure there is at least a 5% of viewport width (5vw) margin between the circle edge and each slider container on all supported screen sizes/orientations.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/Player.tsx",
+          "frontend/src/components/BreathingCircle.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/Player.tsx",
+          "frontend/src/components/BreathingCircle.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/BreathingCircle.tsx",
+    "frontend/src/pages/Player.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}
