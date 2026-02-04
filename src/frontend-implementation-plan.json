@@ -1,21 +1,20 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix segmented circumference progress to advance exactly one segment every 8 seconds",
+  "title": "Update Equal Breathing intro paragraph dummy copy",
   "requirements": [
     {
       "id": "REQ-9",
-      "summary": "Adjust segmented circumference progress fill so exactly one full segment becomes filled each 8 seconds of elapsed session time without altering any other Player visuals or behavior.",
+      "summary": "Replace the Equal Breathing Exercise Info intro paragraph with screenshot-like English dummy text while leaving all other page content unchanged.",
       "acceptanceCriteria": [
-        "For totalDurationSeconds = 32 (totalSegments = 4), the indicator shows 0 filled segments for elapsedSeconds in [0, 8), 1 filled segment for elapsedSeconds in [8, 16), 2 for [16, 24), 3 for [24, 32), and 4 for elapsedSeconds >= 32.",
-        "For any totalDurationSeconds > 0, the filled segment count never exceeds totalSegments and never decreases as elapsedSeconds increases.",
-        "No changes are made to Player layout, breathing circle sizing, colors, typography, or any other Player flow besides the segmented circumference progress fill/timing behavior."
+        "When opening Exercise Info for exerciseId=\"equal-breathing\", the intro paragraph under the “Equal Breathing” title contains screenshot-like dummy text (English) rather than the current/empty copy.",
+        "Only the intro paragraph content is changed (the element corresponding to /html/body/div/div/main/div/p[1]); no other sections, layout, or components are modified."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/SegmentedCircumferenceProgress.tsx",
+          "path": "frontend/src/lib/exerciseInfoContent.ts",
           "operation": "modify",
-          "description": "Update the fill calculation and SVG rendering so the filled portion advances in discrete steps of exactly one full segment per 8 seconds (using totalSegments = ceil(totalDurationSeconds/8), filledSegments = clamp(floor(elapsedSeconds/8), 0..totalSegments)). Render filled segments in a way that guarantees whole-segment increments (e.g., draw each filled segment as its own dash positioned per segment index) while preserving all existing sizing, layout, colors, and overall appearance."
+          "description": "Update only EXERCISE_INFO_CONTENT['equal-breathing'].intro to screenshot-like English dummy copy (matching the provided screenshot tone/structure), without changing any other exercise content or any section content (Benefits/Method/Instructions/etc.)."
         }
       ]
     }

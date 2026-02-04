@@ -19,6 +19,7 @@ interface HomeExerciseCardProps {
   duration: number;
   onDurationChange: (duration: number) => void;
   onStart: () => void;
+  onInfoClick?: () => void;
   hideChangeDuration?: boolean;
 }
 
@@ -30,6 +31,7 @@ export default function HomeExerciseCard({
   duration,
   onDurationChange,
   onStart,
+  onInfoClick,
   hideChangeDuration = false,
 }: HomeExerciseCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -59,6 +61,13 @@ export default function HomeExerciseCard({
     }
   };
 
+  const handleInfoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onInfoClick) {
+      onInfoClick();
+    }
+  };
+
   const formatDuration = (seconds: number) => {
     if (seconds === 0) return '5 min';
     const minutes = Math.floor(seconds / 60);
@@ -78,9 +87,7 @@ export default function HomeExerciseCard({
       >
         <button 
           className="absolute top-3 right-3 sm:top-4 sm:right-4 text-foreground/60 hover:text-foreground transition-colors z-10"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
+          onClick={handleInfoClick}
           aria-label="Info"
         >
           <Info className="h-4 w-4 sm:h-5 sm:w-5" />

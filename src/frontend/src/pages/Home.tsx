@@ -24,6 +24,13 @@ export default function Home() {
     navigate({ to: '/test' });
   };
 
+  const handleNavigateToInfo = (exerciseId: string) => {
+    navigate({
+      to: '/exercise-info',
+      search: { exerciseId },
+    });
+  };
+
   const tileData = [
     {
       pattern: PRESET_PATTERNS[0], // Equal Breathing
@@ -61,6 +68,7 @@ export default function Home() {
             duration={getDuration(tile.pattern.id)}
             onDurationChange={(newDuration) => setDuration(tile.pattern.id, newDuration)}
             onStart={() => handleStartExercise(tile.pattern, tile.themeColor)}
+            onInfoClick={() => handleNavigateToInfo(tile.pattern.id)}
           />
         ))}
         
@@ -72,6 +80,7 @@ export default function Home() {
           duration={0}
           onDurationChange={() => {}}
           onStart={handleNavigateToTest}
+          onInfoClick={() => handleNavigateToInfo('breath-holding-test')}
           hideChangeDuration
         />
       </div>

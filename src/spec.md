@@ -1,11 +1,9 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the segmented circumference progress indicator so it fills exactly one segment every 8 seconds of elapsed session time.
+**Goal:** Populate the Exercise Info intro paragraph for the “Equal Breathing” exercise with screenshot-style English dummy copy.
 
 **Planned changes:**
-- Adjust segmented circumference progress fill logic so the filled segment count increments by 1 at each 8-second boundary (8s, 16s, 24s, …) up to the computed total segment count (totalDurationSeconds/8, rounded up).
-- Ensure the filled segment count is monotonic with elapsed time and never exceeds the total number of segments.
-- Limit changes strictly to the segmented circumference timing/fill behavior without altering Player layout, breathing circle sizing, colors, typography, or other Player behavior.
+- Update only the first intro paragraph under the “Equal Breathing” title on `/exercise-info` (the element at `/html/body/div/div/main/div/p[1]`) when `exerciseId="equal-breathing"` to contain screenshot-like dummy text in English.
 
-**User-visible outcome:** During a session, the segmented circumference indicator fills one additional segment every 8 seconds, accurately reflecting elapsed time without any other visual or behavioral changes to the Player.
+**User-visible outcome:** When viewing Exercise Info for “Equal Breathing,” the intro paragraph beneath the title shows non-empty, screenshot-like English placeholder text, while all other sections and layout remain unchanged.

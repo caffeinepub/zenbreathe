@@ -3,6 +3,7 @@ interface SegmentedCircumferenceProgressProps {
   elapsedSeconds: number;
   radius: number;
   strokeWidth: number;
+  segmentDurationSeconds: number;
   className?: string;
 }
 
@@ -11,10 +12,15 @@ export default function SegmentedCircumferenceProgress({
   elapsedSeconds,
   radius,
   strokeWidth,
+  segmentDurationSeconds,
   className = '',
 }: SegmentedCircumferenceProgressProps) {
-  const totalSegments = Math.ceil(totalDurationSeconds / 8);
-  const filledSegments = Math.min(Math.floor(elapsedSeconds / 8), totalSegments);
+  // Apply safe fallback for segment duration to prevent divide-by-zero
+  const safeSegmentDuration = segmentDurationSeconds > 0 ? segmentDurationSeconds : 8;
+  
+  // Compute total segments and filled segments based on cycle length
+  const totalSegments = Math.max(1, Math.ceil(totalDurationSeconds / safeSegmentDuration));
+  const filledSegments = Math.min(Math.floor(elapsedSeconds / safeSegmentDuration), totalSegments);
   
   const circumference = 2 * Math.PI * radius;
   const segmentLength = circumference / totalSegments;

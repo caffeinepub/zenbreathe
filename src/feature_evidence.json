@@ -1,23 +1,4 @@
 {
   "kind": "feature_evidence_report",
-  "features": [
-    {
-      "featureId": "feature-update-the-segmented-circumference-progress-indicator-so-the-filled-portion-advances-by-exactly-one-segment-every-8-seconds-of-elapsed-session-time-i-e-segment-1-fills-at-8s-segment-2-at-16s-etc-up-to-the-total-number-of-segments-totaldurationseconds-8-rounded-up-this-change-must-only-affect-the-segmented-circumference-timing-fill-behavior-and-must-not-change-the-breathing-circle-s-size-layout-colors-or-other-player-behavior",
-      "featureTitle": "Update the segmented circumference progress indicator so the filled portion advances by exactly one segment every 8 seconds of elapsed session time (i.e., segment 1 fills at 8s, segment 2 at 16s, etc.), up to the total number of segments (totalDurationSeconds/8, rounded up). This change must only affect the segmented circumference timing/fill behavior and must not change the breathing circle’s size, layout, colors, or other Player behavior.",
-      "files": [
-        "frontend/src/components/SegmentedCircumferenceProgress.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-9"
-      ],
-      "confidence": "high"
-    }
-  ]
+  "features": []
 }

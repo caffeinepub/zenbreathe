@@ -37,3 +37,20 @@ export const PRESET_PATTERNS: BreathingPattern[] = [
     holdBottom: 0,
   },
 ];
+
+/**
+ * Compute the total cycle length for a breathing pattern.
+ * Includes all phases: inhale + holdTop + exhale + holdBottom.
+ * Returns a safe non-zero fallback (8 seconds) if the computed value is invalid or zero.
+ */
+export function getCycleLengthSeconds(pattern: BreathingPattern): number {
+  const cycleLength = pattern.inhale + pattern.holdTop + pattern.exhale + pattern.holdBottom;
+  
+  // Validate and return safe fallback if invalid
+  if (!cycleLength || cycleLength <= 0 || !isFinite(cycleLength)) {
+    console.warn('Invalid cycle length computed, using fallback of 8 seconds', pattern);
+    return 8;
+  }
+  
+  return cycleLength;
+}

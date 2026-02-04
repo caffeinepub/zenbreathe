@@ -6,6 +6,7 @@ import Stats from './pages/Stats';
 import Custom from './pages/Custom';
 import About from './pages/About';
 import Settings from './pages/Settings';
+import ExerciseInfo from './pages/ExerciseInfo';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LayoutGrid, BarChart3, Sliders, Heart, Settings as SettingsIcon } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
@@ -22,8 +23,8 @@ function Layout() {
     return 'default';
   };
 
-  // Hide footer on player route
-  const showFooter = currentPath !== '/player';
+  // Hide footer on player and exercise-info routes
+  const showFooter = currentPath !== '/player' && currentPath !== '/exercise-info';
   
   // Show Home-specific header icons only on Home route
   const isHomePage = currentPath === '/';
@@ -146,6 +147,12 @@ const settingsRoute = createRoute({
   component: Settings,
 });
 
+const exerciseInfoRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/exercise-info',
+  component: ExerciseInfo,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   playerRoute,
@@ -154,6 +161,7 @@ const routeTree = rootRoute.addChildren([
   customRoute,
   aboutRoute,
   settingsRoute,
+  exerciseInfoRoute,
 ]);
 
 const router = createRouter({ routeTree });

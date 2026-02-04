@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { ArrowLeft, User, Music, Play } from 'lucide-react';
-import { BreathingPattern } from '../lib/breathingPatterns';
+import { BreathingPattern, getCycleLengthSeconds } from '../lib/breathingPatterns';
 import { useBreathingEngine } from '../hooks/useBreathingEngine';
 import { useWakeLock } from '../hooks/useWakeLock';
 import { AmbientAudioController } from '../lib/ambientAudio';
@@ -83,6 +83,9 @@ export default function Player() {
   // Always call hooks at the top level
   const engine = useBreathingEngine(pattern, { voiceVolume });
   useWakeLock(engine.state.isRunning && !engine.state.isPaused);
+
+  // Compute cycle length from the active pattern
+  const cycleLengthSeconds = getCycleLengthSeconds(pattern);
 
   // Auto-stop when target duration is reached
   useEffect(() => {
@@ -223,6 +226,7 @@ export default function Player() {
               state={engine.state} 
               themeColor={themeColor}
               sessionDuration={targetDuration}
+              cycleLengthSeconds={cycleLengthSeconds}
             />
             
             {/* Phase Label */}

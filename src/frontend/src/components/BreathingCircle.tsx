@@ -6,9 +6,16 @@ interface BreathingCircleProps {
   themeColor?: string;
   overrideText?: string;
   sessionDuration?: number;
+  cycleLengthSeconds?: number;
 }
 
-export default function BreathingCircle({ state, themeColor, overrideText, sessionDuration }: BreathingCircleProps) {
+export default function BreathingCircle({ 
+  state, 
+  themeColor, 
+  overrideText, 
+  sessionDuration,
+  cycleLengthSeconds = 8,
+}: BreathingCircleProps) {
   const getPhaseColor = () => {
     // If a theme color is provided and we're running, use it
     if (themeColor && state.isRunning) {
@@ -67,6 +74,7 @@ export default function BreathingCircle({ state, themeColor, overrideText, sessi
           elapsedSeconds={state.totalElapsed}
           radius={180}
           strokeWidth={8}
+          segmentDurationSeconds={cycleLengthSeconds}
           className="pointer-events-none"
         />
       )}

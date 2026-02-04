@@ -1,34 +1,30 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T22:47:45.169Z",
+  "generatedAt": "2026-02-04T23:12:36.935Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
     "total": 1,
-    "implemented": 1,
+    "implemented": 0,
     "items": [
       {
         "id": "REQ-9",
-        "summary": "Update the segmented circumference progress indicator so the filled portion advances by exactly one segment every 8 seconds of elapsed session time (i.e., segment 1 fills at 8s, segment 2 at 16s, etc.), up to the total number of segments (totalDurationSeconds/8, rounded up). This change must only affect the segmented circumference timing/fill behavior and must not change the breathing circle’s size, layout, colors, or other Player behavior.",
-        "status": "implemented",
+        "summary": "Update the Exercise Info page intro paragraph (the text rendered in the first <p> under the exercise title on /exercise-info) to use dummy copy matching the provided screenshot style for the “Equal Breathing” exercise.",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/components/SegmentedCircumferenceProgress.tsx"
+          "frontend/src/lib/exerciseInfoContent.ts"
         ],
-        "matchedFiles": [
-          "frontend/src/components/SegmentedCircumferenceProgress.tsx"
-        ]
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
     "feature_evidence.json",
-    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/SegmentedCircumferenceProgress.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
