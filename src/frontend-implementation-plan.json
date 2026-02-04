@@ -1,27 +1,26 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Spoken 4-3-2-1 countdown synced to session-start breathing circle countdown",
+  "title": "Player breathing circle: enforce 5% max-diameter margin at full inhale",
   "requirements": [
     {
       "id": "REQ-9",
-      "summary": "Speak “4 3 2 1” in sync with the breathing circle’s initial visible countdown ticks at session start, respecting voice volume and canceling speech on pause/stop.",
+      "summary": "Ensure the breathing circle’s maximum expanded diameter is capped to ~90.909% of its square container so it never touches the outer boundary, maintaining a 5% (of max diameter) visible margin during inhale.",
       "acceptanceCriteria": [
-        "When the user taps Start in the Player, the breathing circle begins its normal countdown and the app speaks “4”, then “3”, then “2”, then “1” aligned to the visible countdown ticks at the start of the session.",
-        "The spoken 4-3-2-1 countdown occurs as part of the breathing circle countdown behavior (not as a separate screen or pre-session intro).",
-        "The spoken countdown respects the existing voice guidance volume control.",
-        "If the session is paused or stopped during the initial countdown, any ongoing speech is canceled and the countdown speech does not continue while paused/stopped."
+        "During the inhale (expand) animation, the circle does not touch or overlap the outer boundary of its container.",
+        "The gap between the circle edge (at maximum expansion) and the outer boundary equals 5% of the circle’s maximum diameter (equivalently: circle max diameter is ~90.909% of the container’s square size).",
+        "The change applies consistently across common mobile viewport sizes (no edge contact at max expansion)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/lib/voiceGuidance.ts",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Add a queued/non-interrupting speech helper (e.g., a function that speaks without canceling existing utterances) so the 4-3-2-1 countdown can play reliably on one-second ticks while preserving existing interrupting behavior for other voice prompts."
+          "description": "Update breathing animation keyframes to cap the maximum scale at 1/1.1 (~0.90909) for the expanded state, and add distinct hold animations/classes so holdTop maintains the capped max scale while holdBottom maintains the contracted scale—preventing any snap to full size that could touch the outer boundary."
         },
         {
-          "path": "frontend/src/hooks/useBreathingEngine.ts",
+          "path": "frontend/src/components/BreathingCircle.tsx",
           "operation": "modify",
-          "description": "Integrate a session-start spoken countdown into the existing breathing timing loop: track which initial countdown numbers have been spoken, speak “4 3 2 1” aligned to the circle’s displayed Math.ceil(timeRemaining) ticks at the very beginning of the session (without adding any new intro flow), suppress/avoid overlapping initial phase announcement as needed, and ensure pause/stop cancel any ongoing speech and prevent further countdown speech while paused/stopped."
+          "description": "Adjust animation class selection so inhale/exhale use the updated capped-scale animations, and holds use phase-appropriate hold classes (separate for holdTop vs holdBottom) to preserve the correct circle size without touching the container border at any point."
         }
       ]
     }

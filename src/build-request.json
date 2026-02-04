@@ -1,35 +1,36 @@
 {
   "kind": "build_request",
-  "title": "Add spoken 4-3-2-1 countdown synced to breathing circle at session start",
+  "title": "Add 5% max-diameter margin so the breathing circle never touches the outer border",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-9",
-      "text": "Add voice guidance that speaks the numbers “4 3 2 1” in sync with the breathing circle countdown at the very start of a guided breathing session (i.e., during the on-circle countdown at the beginning of the first inhale/exhale timing), and do not implement it as a separate pre-session intro flow.",
+      "text": "Update the Player breathing circle sizing so that at its maximum expansion the circle maintains a visible margin to the outer boundary: the margin must equal 5% of the circle’s maximum diameter (i.e., when fully expanded, the circle’s max diameter must be 1/1.1 ≈ 90.909% of its square container, creating the required margin). Ensure the circle never covers/touches the external border during the inhale expansion animation.",
       "target": "frontend",
       "source": {
         "messageIds": [
+          "msg-3",
           "msg-5"
         ],
         "quotes": [
-          "it should be a guided breathing session - so it should be a part of the breathing circle countdown"
+          "WHEN THE circle expands, it covers the external border, have 5% margin between the 2",
+          "circle's masximum diameter"
         ]
       },
       "acceptanceCriteria": [
-        "When the user taps Start in the Player, the breathing circle begins its normal countdown and the app speaks “4”, then “3”, then “2”, then “1” aligned to the visible countdown ticks at the start of the session.",
-        "The spoken 4-3-2-1 countdown occurs as part of the breathing circle countdown behavior (not as a separate screen or pre-session intro).",
-        "The spoken countdown respects the existing voice guidance volume control.",
-        "If the session is paused or stopped during the initial countdown, any ongoing speech is canceled and the countdown speech does not continue while paused/stopped."
+        "During the inhale (expand) animation, the circle does not touch or overlap the outer boundary of its container.",
+        "The gap between the circle edge (at maximum expansion) and the outer boundary equals 5% of the circle’s maximum diameter (equivalently: circle max diameter is ~90.909% of the container’s square size).",
+        "The change applies consistently across common mobile viewport sizes (no edge contact at max expansion)."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/components/ui or any paths listed in frontend.immutablePaths.",
-    "Keep all changes within the existing React + TypeScript frontend (no new backend dependencies)."
+    "Do not modify any files under frontend/src/components/ui (read-only).",
+    "Do not edit immutable hook files listed in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Restoring or adding a separate pre-session intro flow/screen for the countdown.",
-    "Changing the breathing pattern timings or the visual design of the breathing circle beyond what is necessary to support the synced spoken countdown."
+    "Do not change breathing timing, phase logic, or voice/haptics behavior as part of this request.",
+    "Do not redesign the Player screen layout beyond the circle sizing/margin behavior."
   ],
   "imageRequirements": {
     "required": [],

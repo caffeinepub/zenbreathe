@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T22:03:58.530Z",
+  "generatedAt": "2026-02-04T22:20:08.671Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,15 +12,15 @@
     "items": [
       {
         "id": "REQ-9",
-        "summary": "Add voice guidance that speaks the numbers “4 3 2 1” in sync with the breathing circle countdown at the very start of a guided breathing session (i.e., during the on-circle countdown at the beginning of the first inhale/exhale timing), and do not implement it as a separate pre-session intro flow.",
+        "summary": "Update the Player breathing circle sizing so that at its maximum expansion the circle maintains a visible margin to the outer boundary: the margin must equal 5% of the circle’s maximum diameter (i.e., when fully expanded, the circle’s max diameter must be 1/1.1 ≈ 90.909% of its square container, creating the required margin). Ensure the circle never covers/touches the external border during the inhale expansion animation.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/lib/voiceGuidance.ts",
-          "frontend/src/hooks/useBreathingEngine.ts"
+          "frontend/src/index.css",
+          "frontend/src/components/BreathingCircle.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/lib/voiceGuidance.ts",
-          "frontend/src/hooks/useBreathingEngine.ts"
+          "frontend/src/index.css",
+          "frontend/src/components/BreathingCircle.tsx"
         ]
       }
     ]
@@ -30,8 +30,8 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/hooks/useBreathingEngine.ts",
-    "frontend/src/lib/voiceGuidance.ts",
+    "frontend/src/components/BreathingCircle.tsx",
+    "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

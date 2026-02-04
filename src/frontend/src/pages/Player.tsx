@@ -160,6 +160,33 @@ export default function Player() {
     engine.resume();
   };
 
+  // Format countdown timer (mm:ss)
+  const formatCountdown = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Calculate remaining time
+  const remainingTime = Math.max(0, targetDuration - engine.state.totalElapsed);
+
+  // Get phase label for display
+  const getPhaseLabel = (): string => {
+    if (!engine.state.isRunning) return '';
+    
+    switch (engine.state.phase) {
+      case 'inhale':
+        return 'breathe in';
+      case 'exhale':
+        return 'breathe out';
+      case 'holdTop':
+      case 'holdBottom':
+        return 'hold';
+      default:
+        return '';
+    }
+  };
+
   // Don't render until pattern is loaded
   if (!isPatternLoaded) {
     return null;
@@ -167,8 +194,8 @@ export default function Player() {
 
   return (
     <div className="fixed inset-0 bg-[#F5F5F0] flex flex-col">
-      {/* Top - Back Arrow Only */}
-      <div className="absolute top-6 left-6 z-10">
+      {/* Top - Back Arrow and Countdown Timer */}
+      <div className="absolute top-6 left-6 right-6 z-10 flex items-center justify-between">
         <button
           onClick={handleClose}
           className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center transition-all active:scale-95 active:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400"
@@ -176,10 +203,17 @@ export default function Player() {
         >
           <ArrowLeft className="h-6 w-6 text-gray-700" />
         </button>
+        
+        {/* Countdown Timer */}
+        {engine.state.isRunning && targetDuration > 0 && (
+          <div className="absolute left-1/2 -translate-x-1/2 text-2xl font-medium text-gray-700">
+            {formatCountdown(remainingTime)}
+          </div>
+        )}
       </div>
 
       {/* Main Content - 3-column flex layout with 5vw gaps */}
-      <div className="flex-1 flex items-center justify-center px-4">
+      <div className="flex-1 flex flex-col items-center justify-center px-4">
         <div className="flex items-center justify-center w-full max-w-7xl" style={{ gap: '5vw' }}>
           {/* Left Volume Control - Voice Guidance */}
           <div className="flex-shrink-0">
@@ -192,11 +226,19 @@ export default function Player() {
           </div>
 
           {/* Centered Breathing Circle - grows to fill available space */}
-          <div className="flex-1 flex items-center justify-center min-w-0">
+          <div className="flex-1 flex flex-col items-center justify-center min-w-0 gap-6">
             <BreathingCircle 
               state={engine.state} 
               themeColor={themeColor}
+              sessionDuration={targetDuration}
             />
+            
+            {/* Phase Label */}
+            {engine.state.isRunning && (
+              <div className="text-xl font-medium text-gray-600">
+                {getPhaseLabel()}
+              </div>
+            )}
           </div>
 
           {/* Right Volume Control - Ambient Sound */}

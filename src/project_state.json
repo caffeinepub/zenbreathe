@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 34,
+  "projectStateVersion": 46,
   "summary": "ZenBreathe is a minimalist React + Tailwind breathing companion (mobile/PWA-oriented) featuring preset and custom breathing patterns, a full-screen guided breathing player with an animated countdown circle, a pre-session intro sequence with spoken prompts, voice guidance and haptics during phases, wake-lock support, optional ambient audio (rain/waves), local-only persistence for session history and breath-hold attempts, and a stats dashboard (weekly minutes, breath-hold trend, recent sessions). The repo also contains scaffolding for Internet Identity authentication and an ICP backend actor, but the included Motoko canister is currently empty.",
   "existing_features": [
     {
@@ -258,8 +258,48 @@
       "version": 1
     },
     {
-      "id": "feature-add-voice-guidance-that-speaks-the-numbers-4-3-2-1-in-sync-with-the-breathing-circle-countdown-at-the-very-start-of-a-guided-breathing-session-i-e-during-the-on-circle-countdown-at-the-beginning-of-the-first-inhale-exhale-timing-and-do-not-implement-it-as-a-separate-pre-session-intro-flow",
-      "title": "Add voice guidance that speaks the numbers “4 3 2 1” in sync with the breathing circle countdown at the very start of a guided breathing session (i.e., during the on-circle countdown at the beginning of the first inhale/exhale timing), and do not implement it as a separate pre-session intro flow.",
+      "id": "IF-24",
+      "title": "Player session timer + segmented circumference progress indicator",
+      "synonyms": [
+        "Top countdown timer",
+        "SegmentedCircumferenceProgress",
+        "Duration-based progress ring"
+      ],
+      "description": "Player uses the selected session duration to render a remaining-time countdown and a segmented circumference/ring progress indicator (segments based on totalDuration/8s) that fills/darkens as the session advances.",
+      "reqIds": [
+        "AR-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-25",
+      "title": "Player phase text guidance synced to countdown",
+      "synonyms": [
+        "Breathe in/Breathe out text",
+        "Phase label under circle"
+      ],
+      "description": "Player displays phase text (e.g., “Breathe in” / “Breathe out”) below the breathing circle synced to the active phase/countdown and updates at a fixed cadence (every 4 seconds).",
+      "reqIds": [
+        "AR-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-26",
+      "title": "Player layout adjustments to avoid control overlap",
+      "synonyms": [
+        "Smaller breathing circle",
+        "No overlap with volume sliders"
+      ],
+      "description": "Player UI sizing/spacing updated so the breathing circle does not overlap the vertical volume slider controls on typical mobile viewports.",
+      "reqIds": [
+        "AR-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-player-breathing-circle-sizing-so-that-at-its-maximum-expansion-the-circle-maintains-a-visible-margin-to-the-outer-boundary-the-margin-must-equal-5-of-the-circle-s-maximum-diameter-i-e-when-fully-expanded-the-circle-s-max-diameter-must-be-1-1-1-90-909-of-its-square-container-creating-the-required-margin-ensure-the-circle-never-covers-touches-the-external-border-during-the-inhale-expansion-animation",
+      "title": "Update the Player breathing circle sizing so that at its maximum expansion the circle maintains a visible margin to the outer boundary: the margin must equal 5% of the circle’s maximum diameter (i.e., when fully expanded, the circle’s max diameter must be 1/1.1 ≈ 90.909% of its square container, creating the required margin). Ensure the circle never covers/touches the external border during the inhale expansion animation.",
       "reqIds": [
         "REQ-9"
       ],
@@ -293,7 +333,19 @@
     },
     {
       "id": "AR-5",
-      "summary": "Add spoken voice guidance for the on-circle 4-3-2-1 countdown as part of the breathing circle countdown at the start of the guided session (not a separate pre-session intro)",
+      "summary": "In Player, display phase text (“Breathe in” / “Breathe out”) below the circle synced to the countdown, changing every 4 seconds",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "In Player, use the chosen session duration to show a top countdown timer and add a circle circumference progress indicator segmented every 8 seconds (segments = totalDuration/8) with segments filling/darkening over time",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Adjust Player breathing circle sizing so when it expands it maintains ~5% margin from the outer border (does not cover the external border)",
       "reqIds": [],
       "status": "pending"
     }
@@ -311,16 +363,15 @@
     "User preference update: Player should not run a pre-session intro by default; session begins immediately on Start."
   ],
   "known_issues": [
-    "Player auto-stop compares engine.state.totalElapsed (milliseconds) against targetDuration passed from Home (seconds), causing sessions to end far too early unless units are corrected.",
     "Ambient audio mode (off/rain/waves) exists in Player state, but there is no UI to change ambientMode, so rain/waves playback is unreachable in normal use.",
     "Home exercise card Info buttons stop propagation but do not open any info dialog/screen (no implemented info UX).",
-    "Service worker registration helper exists but is not invoked from current frontend/src/main.tsx; additionally /sw.js is not present in this snapshot.",
     "Settings toggles are placeholder UI only (not persisted and not wired to actual behaviors like voice/haptics/wake lock/ambient audio).",
     "Backend canister (backend/main.mo) is an empty actor; no server-side features are implemented.",
     "localStorage persistence has no schema validation/migrations and stored arrays can grow without bounds.",
     "App naming is inconsistent across surfaces (e.g., manifest/title uses ZenBreathe while header/About use “Breathe”).",
     "There are two global CSS files (frontend/src/index.css and frontend/index.css); only src/index.css is imported, which may leave dead/confusing styles.",
-    "Current deployed build reportedly has fully broken breathing playback (user requesting rollback to older version)."
+    "Current deployed build reportedly has fully broken breathing playback (user requesting rollback to older version).",
+    "Breathing circle expansion currently overlaps/covers the external border; needs ~5% margin between circle and border during animation."
   ],
   "isFixRequest": true,
   "gameProjectType": "none",

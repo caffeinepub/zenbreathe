@@ -1,5 +1,5 @@
 {
-  "frontend/src/index.css": "Global styles with Inter font, base typography safeguards (word breaking, max-width constraints), breathing animations, and minimalist light theme tokens.",
+  "frontend/src/index.css": "Global styles with Inter font, base typography safeguards, breathing animations capped at 0.90909 scale (5% margin constraint) with separate hold-top and hold-bottom animations, and minimalist light theme tokens.",
   "frontend/tailwind.config.js": "Tailwind configuration with Inter font, custom 'xs' breakpoint at 400px for fine-grained responsive control, and extended color/spacing tokens.",
   "frontend/index.html": "HTML entry point with PWA manifest link, theme-color meta, and favicon reference for installable app support.",
   "frontend/public/manifest.json": "PWA manifest configuration with app metadata, display settings, theme colors, and icon references for installation.",
@@ -17,11 +17,11 @@
   "frontend/src/hooks/useHaptics.ts": "React hook providing haptic feedback via navigator.vibrate API with safe fallback when unsupported.",
   "frontend/src/hooks/useBreathingEngine.ts": "Core breathing engine hook managing phase transitions, countdown timer, voice guidance with volume control including spoken \"4 3 2 1\" countdown synced to the breathing circle's initial countdown at session start, haptic feedback, and pause/resume functionality that preserves phase state, cancels speech on pause/stop, and tracks active breathing time excluding paused periods.",
   "frontend/src/pages/Home.tsx": "Home screen displaying a responsive grid (1 column on very small screens, 2 columns at 400px+) of breathing exercise cards with tap-to-start navigation to Player or Test pages.",
-  "frontend/src/pages/Player.tsx": "Full-screen breathing player with 3-column flex layout (left slider, centered circle, right slider) separated by 5vw gaps, manual Start control, pause/resume functionality, auto-stop at target duration, and session logging.",
+  "frontend/src/pages/Player.tsx": "Full-screen breathing player with 3-column flex layout, manual Start control, pause/resume functionality, auto-stop at target duration, session logging, top-centered countdown timer showing remaining time in mm:ss format, and phase label below the breathing circle that displays \"breathe in\", \"breathe out\", or \"hold\" based on real phase durations.",
   "frontend/src/pages/Test.tsx": "Breath hold test page with responsive typography, card sizing, and button text that scales from mobile to desktop while maintaining the stopwatch and record display functionality.",
   "frontend/src/pages/Stats.tsx": "Stats dashboard displaying 7-day bar chart of breathing minutes, breath hold line chart over time, and table of last 10 sessions from LocalStorage.",
   "frontend/src/components/CustomPatternForm.tsx": "Form component with 4 numeric inputs (Inhale, Hold Top, Exhale, Hold Bottom) accepting 0.5s precision for custom breathing patterns.",
-  "frontend/src/components/BreathingCircle.tsx": "Responsive breathing circle component that fills its container with aspect-square ratio, soft pastel fill colors, dark charcoal countdown number with responsive text sizing, smooth scale animations that pause when session is paused, and optional overrideText prop.",
+  "frontend/src/components/BreathingCircle.tsx": "Responsive breathing circle component with aspect-square ratio, soft pastel fill colors, dark charcoal countdown number, smooth scale animations capped at 0.90909 max expansion with phase-specific hold animations (holdTop maintains expanded state, holdBottom maintains contracted state), optional overrideText prop, and integrated segmented circumference progress ring overlay.",
   "frontend/src/components/charts/WeeklyMinutesBarChart.tsx": "Bar chart component visualizing daily breathing minutes for last 7 days with responsive height scaling.",
   "frontend/src/components/charts/BreathHoldLineChart.tsx": "Line chart component displaying breath hold duration progression over time using SVG path rendering.",
   "frontend/src/components/SessionList.tsx": "Session history table with responsive text sizing, horizontal scroll wrapper for narrow screens, and whitespace controls to prevent overflow.",
@@ -32,5 +32,6 @@
   "frontend/src/hooks/usePerExerciseDuration.ts": "React hook managing per-exercise duration preferences with localStorage persistence, providing getDuration and setDuration functions with a default of 5 minutes (300 seconds).",
   "frontend/src/pages/About.tsx": "About Us page with app description, placeholder premium upgrade CTA with dummy pricing, quick settings preview, and footer with version and caffeine.ai attribution.",
   "frontend/src/pages/Settings.tsx": "Settings page with placeholder controls for audio settings, haptic feedback, notifications, display preferences, and data management options organized in card sections.",
-  "frontend/src/lib/playerDurationGuards.ts": "Duration validation and auto-stop guard utilities that validate incoming duration values, apply safe fallbacks with console warnings, and prevent premature auto-stop in multi-minute sessions."
+  "frontend/src/lib/playerDurationGuards.ts": "Duration validation and auto-stop guard utilities that validate incoming duration values, apply safe fallbacks with console warnings, and prevent premature auto-stop in multi-minute sessions.",
+  "frontend/src/components/SegmentedCircumferenceProgress.tsx": "SVG-based segmented ring component that renders N equal segments (N = ceil(totalDurationSeconds/8)) and darkens exactly floor(elapsedSeconds/8) segments with instant jumps at 8-second boundaries."
 }

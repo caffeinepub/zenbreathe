@@ -1,12 +1,14 @@
 import { BreathingState } from '../hooks/useBreathingEngine';
+import SegmentedCircumferenceProgress from './SegmentedCircumferenceProgress';
 
 interface BreathingCircleProps {
   state: BreathingState;
   themeColor?: string;
   overrideText?: string;
+  sessionDuration?: number;
 }
 
-export default function BreathingCircle({ state, themeColor, overrideText }: BreathingCircleProps) {
+export default function BreathingCircle({ state, themeColor, overrideText, sessionDuration }: BreathingCircleProps) {
   const getPhaseColor = () => {
     // If a theme color is provided and we're running, use it
     if (themeColor && state.isRunning) {
@@ -35,8 +37,12 @@ export default function BreathingCircle({ state, themeColor, overrideText }: Bre
         return 'animate-breathe-in';
       case 'exhale':
         return 'animate-breathe-out';
+      case 'holdTop':
+        return 'animate-breathe-hold-top';
+      case 'holdBottom':
+        return 'animate-breathe-hold-bottom';
       default:
-        return 'animate-breathe-hold';
+        return 'animate-breathe-hold-bottom';
     }
   };
 
@@ -54,6 +60,18 @@ export default function BreathingCircle({ state, themeColor, overrideText }: Bre
 
   return (
     <div className="relative flex items-center justify-center w-full max-w-md aspect-square">
+      {/* Segmented progress ring */}
+      {sessionDuration && sessionDuration > 0 && state.isRunning && (
+        <SegmentedCircumferenceProgress
+          totalDurationSeconds={sessionDuration}
+          elapsedSeconds={state.totalElapsed}
+          radius={180}
+          strokeWidth={8}
+          className="pointer-events-none"
+        />
+      )}
+      
+      {/* Main breathing circle */}
       <div
         className={`w-full h-full rounded-full flex items-center justify-center transition-all duration-700 ${getAnimationClass()}`}
         style={{

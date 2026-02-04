@@ -66,21 +66,21 @@
     }
 }
 
-/* Breathing circle animations - smooth and gentle */
+/* Breathing circle animations - smooth and gentle with 5% margin constraint */
 @keyframes breathe-in {
     from {
         transform: scale(0.75);
         opacity: 0.95;
     }
     to {
-        transform: scale(1);
+        transform: scale(0.90909);
         opacity: 1;
     }
 }
 
 @keyframes breathe-out {
     from {
-        transform: scale(1);
+        transform: scale(0.90909);
         opacity: 1;
     }
     to {
@@ -89,14 +89,25 @@
     }
 }
 
-@keyframes breathe-hold {
+@keyframes breathe-hold-top {
     from {
-        transform: scale(1);
+        transform: scale(0.90909);
         opacity: 1;
     }
     to {
-        transform: scale(1);
+        transform: scale(0.90909);
         opacity: 1;
+    }
+}
+
+@keyframes breathe-hold-bottom {
+    from {
+        transform: scale(0.75);
+        opacity: 0.95;
+    }
+    to {
+        transform: scale(0.75);
+        opacity: 0.95;
     }
 }
 
@@ -108,6 +119,10 @@
     animation: breathe-out ease-in-out forwards;
 }
 
-.animate-breathe-hold {
-    animation: breathe-hold ease-in-out forwards;
+.animate-breathe-hold-top {
+    animation: breathe-hold-top ease-in-out forwards;
+}
+
+.animate-breathe-hold-bottom {
+    animation: breathe-hold-bottom ease-in-out forwards;
 }

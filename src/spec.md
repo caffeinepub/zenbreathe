@@ -1,12 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Add spoken “4 3 2 1” voice guidance synced to the existing on-circle countdown at the very start of a guided breathing session.
+**Goal:** Prevent the Player breathing circle from touching or overlapping the outer border at maximum inhale expansion by enforcing a 5% max-diameter margin.
 
 **Planned changes:**
-- Trigger text-to-speech of “4”, “3”, “2”, “1” aligned with the breathing circle’s initial visible countdown ticks when the user taps Start.
-- Ensure the spoken countdown is part of the existing breathing circle countdown behavior (no separate pre-session screen/flow).
-- Route the countdown speech through the existing voice guidance volume control.
-- Cancel any in-progress countdown speech when the session is paused or stopped, and prevent it from continuing while paused/stopped.
+- Update the Player breathing circle max-size calculation so its maximum diameter is ~90.909% (1/1.1) of its square container size, creating a 5% margin relative to the circle’s maximum diameter.
+- Ensure the inhale (expand) animation respects this max diameter across common mobile viewport sizes so the circle never covers/touches the external border.
 
-**User-visible outcome:** When starting a guided breathing session, the app speaks “4 3 2 1” in sync with the breathing circle’s initial countdown, honoring voice volume settings and stopping immediately if paused/stopped.
+**User-visible outcome:** During inhale expansion, the breathing circle consistently stays inside the outer boundary with a visible gap, never touching or overlapping the border.
