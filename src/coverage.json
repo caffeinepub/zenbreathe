@@ -1,30 +1,84 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T23:12:36.935Z",
+  "generatedAt": "2026-02-04T23:20:50.090Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 0,
+    "total": 5,
+    "implemented": 5,
     "items": [
       {
-        "id": "REQ-9",
-        "summary": "Update the Exercise Info page intro paragraph (the text rendered in the first <p> under the exercise title on /exercise-info) to use dummy copy matching the provided screenshot style for the “Equal Breathing” exercise.",
-        "status": "missing",
+        "id": "REQ-10",
+        "summary": "Ensure the Exercise Info screen is visibly populated (non-empty) when opened from the Home card Info icon, using the existing EXERCISE_INFO_CONTENT mapping keyed by the exerciseId search param.",
+        "status": "implemented",
         "plannedFiles": [
-          "frontend/src/lib/exerciseInfoContent.ts"
+          "frontend/src/pages/Home.tsx",
+          "frontend/src/pages/ExerciseInfo.tsx"
         ],
-        "matchedFiles": []
+        "matchedFiles": [
+          "frontend/src/pages/Home.tsx",
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ]
+      },
+      {
+        "id": "REQ-11",
+        "summary": "Adjust the Exercise Info layout and section styling to match the provided screenshot: title centered, a short intro paragraph, horizontal divider lines, and collapsible sections with uppercase headings (e.g., “BENEFITS”, “METHOD”) and a right-side chevron indicator reflecting open/closed state.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ]
+      },
+      {
+        "id": "REQ-12",
+        "summary": "Update the dummy content structure for the “Equal Breathing” Exercise Info entry so it matches the screenshot’s section naming and content intent (at minimum: “BENEFITS” and “METHOD” with step-like instructions).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/exerciseInfoContent.ts",
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/exerciseInfoContent.ts",
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ]
+      },
+      {
+        "id": "REQ-13",
+        "summary": "Add a bottom primary CTA button on the Exercise Info screen labeled “BEGIN EXERCISE” that starts the currently viewed exercise (navigates to /player with the corresponding breathing pattern and the user’s saved duration for that exercise).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Update the Exercise Info page header navigation control to use a close “X” icon (instead of the current back arrow UI) and ensure it correctly exits the Exercise Info screen when tapped (go back if browser history exists; otherwise navigate to Home).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/ExerciseInfo.tsx"
+        ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
     "feature_evidence.json",
+    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/src/lib/exerciseInfoContent.ts",
+    "frontend/src/pages/ExerciseInfo.tsx",
+    "frontend/src/pages/Home.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

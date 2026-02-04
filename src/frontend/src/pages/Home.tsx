@@ -4,6 +4,13 @@ import { useNavigate } from '@tanstack/react-router';
 import { Minus, Square, Navigation, Pause } from 'lucide-react';
 import { usePerExerciseDuration } from '../hooks/usePerExerciseDuration';
 
+// Map pattern IDs to exerciseInfo IDs
+const PATTERN_TO_EXERCISE_ID_MAP: Record<string, string> = {
+  'equal': 'equal-breathing',
+  'box': 'box-breathing',
+  '478': '4-7-8',
+};
+
 export default function Home() {
   const navigate = useNavigate();
   const { getDuration, setDuration } = usePerExerciseDuration();
@@ -24,7 +31,8 @@ export default function Home() {
     navigate({ to: '/test' });
   };
 
-  const handleNavigateToInfo = (exerciseId: string) => {
+  const handleNavigateToInfo = (patternId: string) => {
+    const exerciseId = PATTERN_TO_EXERCISE_ID_MAP[patternId] || patternId;
     navigate({
       to: '/exercise-info',
       search: { exerciseId },

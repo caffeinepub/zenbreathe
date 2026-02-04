@@ -1,4 +1,97 @@
 {
   "kind": "feature_evidence_report",
-  "features": []
+  "features": [
+    {
+      "featureId": "feature-update-the-exercise-info-page-header-navigation-control-to-use-a-close-x-icon-instead-of-the-current-back-arrow-ui-and-ensure-it-correctly-exits-the-exercise-info-screen-when-tapped-go-back-if-browser-history-exists-otherwise-navigate-to-home",
+      "featureTitle": "Update the Exercise Info page header navigation control to use a close “X” icon (instead of the current back arrow UI) and ensure it correctly exits the Exercise Info screen when tapped (go back if browser history exists; otherwise navigate to Home).",
+      "files": [
+        "frontend/src/pages/ExerciseInfo.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-exercise-info-screen-is-visibly-populated-non-empty-when-opened-from-the-home-card-info-icon-using-the-existing-exercise-info-content-mapping-keyed-by-the-exerciseid-search-param",
+      "featureTitle": "Ensure the Exercise Info screen is visibly populated (non-empty) when opened from the Home card Info icon, using the existing EXERCISE_INFO_CONTENT mapping keyed by the exerciseId search param.",
+      "files": [
+        "frontend/src/pages/ExerciseInfo.tsx",
+        "frontend/src/pages/Home.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-adjust-the-exercise-info-layout-and-section-styling-to-match-the-provided-screenshot-title-centered-a-short-intro-paragraph-horizontal-divider-lines-and-collapsible-sections-with-uppercase-headings-e-g-benefits-method-and-a-right-side-chevron-indicator-reflecting-open-closed-state",
+      "featureTitle": "Adjust the Exercise Info layout and section styling to match the provided screenshot: title centered, a short intro paragraph, horizontal divider lines, and collapsible sections with uppercase headings (e.g., “BENEFITS”, “METHOD”) and a right-side chevron indicator reflecting open/closed state.",
+      "files": [
+        "frontend/src/pages/ExerciseInfo.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-dummy-content-structure-for-the-equal-breathing-exercise-info-entry-so-it-matches-the-screenshot-s-section-naming-and-content-intent-at-minimum-benefits-and-method-with-step-like-instructions",
+      "featureTitle": "Update the dummy content structure for the “Equal Breathing” Exercise Info entry so it matches the screenshot’s section naming and content intent (at minimum: “BENEFITS” and “METHOD” with step-like instructions).",
+      "files": [
+        "frontend/src/lib/exerciseInfoContent.ts",
+        "frontend/src/pages/ExerciseInfo.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-bottom-primary-cta-button-on-the-exercise-info-screen-labeled-begin-exercise-that-starts-the-currently-viewed-exercise-navigates-to-player-with-the-corresponding-breathing-pattern-and-the-user-s-saved-duration-for-that-exercise",
+      "featureTitle": "Add a bottom primary CTA button on the Exercise Info screen labeled “BEGIN EXERCISE” that starts the currently viewed exercise (navigates to /player with the corresponding breathing pattern and the user’s saved duration for that exercise).",
+      "files": [
+        "frontend/src/pages/ExerciseInfo.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    }
+  ]
 }
