@@ -1,116 +1,33 @@
 {
   "kind": "build_request",
-  "title": "Populate and restyle Exercise Info screen to match reference (close icon + Benefits/Method + Begin Exercise CTA)",
+  "title": "Update header title to ZenBreathe",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-9",
-      "text": "Update the Exercise Info page header navigation control to use a close “X” icon (instead of the current back arrow UI) and ensure it correctly exits the Exercise Info screen when tapped (go back if browser history exists; otherwise navigate to Home).",
+      "text": "Change the app’s top header/title text in the shared layout to display “ZenBreathe” instead of “Breathe”.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-5"
         ],
         "quotes": [
-          "this"
+          "change the name on the top to ZenBreathe"
         ]
       },
       "acceptanceCriteria": [
-        "On /exercise-info, the top-left navigation control is a close “X” icon (not an arrow).",
-        "Tapping the close icon returns to the previous screen when history exists; otherwise it navigates to '/'.",
-        "The close icon control has an appropriate accessible label (e.g., “Close”)."
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Ensure the Exercise Info screen is visibly populated (non-empty) when opened from the Home card Info icon, using the existing EXERCISE_INFO_CONTENT mapping keyed by the exerciseId search param.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-3",
-          "msg-6"
-        ],
-        "quotes": [
-          "the page that appears when i click on this is still empty, i need data to be filled like this there",
-          "this"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Clicking the Info icon on each Home exercise card navigates to /exercise-info with the correct exerciseId search param.",
-        "The Exercise Info page renders the title, intro text, and at least two content sections for valid exerciseId values (e.g., equal-breathing, box-breathing, 4-7-8, breath-holding-test).",
-        "If an invalid exerciseId is provided, the existing “Exercise information not found” fallback is shown."
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "text": "Adjust the Exercise Info layout and section styling to match the provided screenshot: title centered, a short intro paragraph, horizontal divider lines, and collapsible sections with uppercase headings (e.g., “BENEFITS”, “METHOD”) and a right-side chevron indicator reflecting open/closed state.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4",
-          "msg-6"
-        ],
-        "quotes": [
-          "whatever is in the screenshot",
-          "this"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The Exercise Info title is centered at the top of the content area.",
-        "The intro paragraph appears directly under the title and is readable/visible.",
-        "Sections are presented as collapsible blocks with uppercase titles and a chevron indicator on the right.",
-        "There are visible divider lines separating major content areas/sections."
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "text": "Update the dummy content structure for the “Equal Breathing” Exercise Info entry so it matches the screenshot’s section naming and content intent (at minimum: “BENEFITS” and “METHOD” with step-like instructions).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4",
-          "msg-6"
-        ],
-        "quotes": [
-          "whatever is in the screenshot",
-          "this"
-        ]
-      },
-      "acceptanceCriteria": [
-        "For exerciseId='equal-breathing', the sections include “BENEFITS” and “METHOD” (matching the screenshot naming).",
-        "The “METHOD” section includes step-style instructions (e.g., Step 1 / Step 2) similar to the reference screenshot.",
-        "The content is dummy text (no backend dependency) and renders without empty states."
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "text": "Add a bottom primary CTA button on the Exercise Info screen labeled “BEGIN EXERCISE” that starts the currently viewed exercise (navigates to /player with the corresponding breathing pattern and the user’s saved duration for that exercise).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4",
-          "msg-6"
-        ],
-        "quotes": [
-          "whatever is in the screenshot",
-          "this"
-        ]
-      },
-      "acceptanceCriteria": [
-        "A “BEGIN EXERCISE” button is visible near the bottom of /exercise-info (for breathing exercises).",
-        "Tapping “BEGIN EXERCISE” navigates to /player with the correct pattern (matching the current exerciseId) and includes the saved per-exercise duration (via existing local persistence hook).",
-        "If the exerciseId does not correspond to a playable breathing pattern (e.g., breath-holding-test), the button is hidden or replaced with an appropriate action that does not break navigation."
+        "When viewing any route that shows the shared header (e.g., Home, Stats, Custom, Settings, About), the centered header title reads “ZenBreathe”.",
+        "No other header layout behavior changes (e.g., Home-only icons, spacing) aside from the title text."
       ]
     }
   ],
   "constraints": [
-    "Apply the requested UI changes specifically to the selected element (/html/body/div/div/main/div/div/div/button/svg) and its immediate Exercise Info header control context; do not make unrelated UI changes elsewhere.",
-    "Keep frontend changes within the existing React + TypeScript + Tailwind + shadcn/ui stack; do not edit any files under frontend/src/components/ui.",
-    "Do not add backend dependencies; Exercise Info content must remain frontend-only dummy data."
+    "Do not edit files under frontend/src/components/ui (shadcn UI components are read-only).",
+    "Do not edit any paths listed in SYSTEM_CONTEXT.frontend.immutablePaths."
   ],
   "nonGoals": [
-    "Do not implement real content management or remote fetching for exercise info.",
-    "Do not change breathing engine behavior, Player timing, audio, or haptics as part of this request."
+    "Do not rename or rebrand other in-app text (e.g., About page headings/body copy) unless explicitly requested.",
+    "Do not change PWA manifest metadata or HTML document title (these already use “ZenBreathe”)."
   ],
   "imageRequirements": {
     "required": [],

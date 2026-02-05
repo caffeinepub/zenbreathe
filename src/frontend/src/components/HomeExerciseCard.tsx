@@ -1,15 +1,8 @@
 import { ReactNode, useState, KeyboardEvent } from 'react';
 import { Info, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { BreathingPattern } from '@/lib/breathingPatterns';
+import BreathCyclesDurationDialog from './BreathCyclesDurationDialog';
 
 interface HomeExerciseCardProps {
   title: string;
@@ -21,6 +14,7 @@ interface HomeExerciseCardProps {
   onStart: () => void;
   onInfoClick?: () => void;
   hideChangeDuration?: boolean;
+  pattern?: BreathingPattern;
 }
 
 export default function HomeExerciseCard({
@@ -33,21 +27,17 @@ export default function HomeExerciseCard({
   onStart,
   onInfoClick,
   hideChangeDuration = false,
+  pattern,
 }: HomeExerciseCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [tempDuration, setTempDuration] = useState(duration);
 
   const handleOpenDialog = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setTempDuration(duration);
     setIsDialogOpen(true);
   };
 
-  const handleSaveDuration = () => {
-    if (tempDuration > 0) {
-      onDurationChange(tempDuration);
-    }
-    setIsDialogOpen(false);
+  const handleSaveDuration = (durationSeconds: number) => {
+    onDurationChange(durationSeconds);
   };
 
   const handleCardClick = () => {
@@ -66,14 +56,6 @@ export default function HomeExerciseCard({
     if (onInfoClick) {
       onInfoClick();
     }
-  };
-
-  const formatDuration = (seconds: number) => {
-    if (seconds === 0) return '5 min';
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    if (secs === 0) return `${minutes} min`;
-    return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -125,39 +107,14 @@ export default function HomeExerciseCard({
         )}
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[90vw] sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-base sm:text-lg">Set Duration</DialogTitle>
-          </DialogHeader>
-          <div className="py-4">
-            <Label htmlFor="duration" className="text-xs sm:text-sm font-medium">
-              Duration (seconds)
-            </Label>
-            <Input
-              id="duration"
-              type="number"
-              min="30"
-              max="3600"
-              step="30"
-              value={tempDuration}
-              onChange={(e) => setTempDuration(parseInt(e.target.value) || 300)}
-              className="mt-2 text-sm sm:text-base"
-            />
-            <p className="text-xs text-muted-foreground mt-2">
-              Current: {formatDuration(tempDuration)}
-            </p>
-          </div>
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="text-sm">
-              Cancel
-            </Button>
-            <Button onClick={handleSaveDuration} className="text-sm">
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {pattern && (
+        <BreathCyclesDurationDialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          pattern={pattern}
+          onSave={handleSaveDuration}
+        />
+      )}
     </>
   );
 }

@@ -1,96 +1,20 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Populate and restyle Exercise Info screen (close icon, collapsible sections, Begin Exercise CTA)",
+  "title": "Update shared header title to ZenBreathe",
   "requirements": [
     {
       "id": "REQ-9",
-      "summary": "Replace Exercise Info back arrow with a close “X” control that exits the screen (history-back when possible, otherwise Home) and is accessible.",
+      "summary": "Update the shared layout header title text to display “ZenBreathe” instead of “Breathe” across all routes that show the header.",
       "acceptanceCriteria": [
-        "On /exercise-info, the top-left navigation control is a close “X” icon (not an arrow).",
-        "Tapping the close icon returns to the previous screen when history exists; otherwise it navigates to '/'.",
-        "The close icon control has an appropriate accessible label (e.g., “Close”)."
+        "When viewing any route that shows the shared header (e.g., Home, Stats, Custom, Settings, About), the centered header title reads “ZenBreathe”.",
+        "No other header layout behavior changes (e.g., Home-only icons, spacing) aside from the title text."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/ExerciseInfo.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Update the Exercise Info header control to a close “X” icon button (accessible aria-label like “Close”) while keeping the existing exit behavior (history back when available; otherwise navigate to '/'). Keep the change scoped to the Exercise Info header control context only. Use shadcn/ui Button for consistent button behavior; verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "summary": "Ensure Exercise Info is populated when opened from Home Info icon using EXERCISE_INFO_CONTENT keyed by exerciseId search param.",
-      "acceptanceCriteria": [
-        "Clicking the Info icon on each Home exercise card navigates to /exercise-info with the correct exerciseId search param.",
-        "The Exercise Info page renders the title, intro text, and at least two content sections for valid exerciseId values (e.g., equal-breathing, box-breathing, 4-7-8, breath-holding-test).",
-        "If an invalid exerciseId is provided, the existing “Exercise information not found” fallback is shown."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/Home.tsx",
-          "operation": "modify",
-          "description": "Fix the Info navigation to pass an exerciseId that matches EXERCISE_INFO_CONTENT keys (e.g., 'equal-breathing', 'box-breathing', '4-7-8', 'breath-holding-test') instead of the breathing pattern id, so /exercise-info renders populated content."
-        },
-        {
-          "path": "frontend/src/pages/ExerciseInfo.tsx",
-          "operation": "modify",
-          "description": "Ensure the page reads the exerciseId search param and renders the mapped EXERCISE_INFO_CONTENT entry (title, intro, and sections). Preserve the existing not-found fallback for invalid exerciseId values."
-        }
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "summary": "Restyle Exercise Info to match the reference: centered title, intro under title, divider lines, and collapsible uppercase sections with chevron state indication.",
-      "acceptanceCriteria": [
-        "The Exercise Info title is centered at the top of the content area.",
-        "The intro paragraph appears directly under the title and is readable/visible.",
-        "Sections are presented as collapsible blocks with uppercase titles and a chevron indicator on the right.",
-        "There are visible divider lines separating major content areas/sections."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/ExerciseInfo.tsx",
-          "operation": "modify",
-          "description": "Adjust the Exercise Info content layout to center the title and place the intro directly beneath it. Replace the current card-like section styling with a divider-line layout (e.g., horizontal rules / border separators) and render sections as collapsible blocks with uppercase headings. Use shadcn/ui Accordion to support collapsible sections with a right-side chevron indicator reflecting open/closed state; verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "summary": "Update Equal Breathing dummy Exercise Info content to match screenshot intent with “BENEFITS” and “METHOD” (step-style instructions).",
-      "acceptanceCriteria": [
-        "For exerciseId='equal-breathing', the sections include “BENEFITS” and “METHOD” (matching the screenshot naming).",
-        "The “METHOD” section includes step-style instructions (e.g., Step 1 / Step 2) similar to the reference screenshot.",
-        "The content is dummy text (no backend dependency) and renders without empty states."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/lib/exerciseInfoContent.ts",
-          "operation": "modify",
-          "description": "Restructure the 'equal-breathing' entry so its sections match the screenshot naming and intent: include at minimum 'BENEFITS' and 'METHOD', and ensure 'METHOD' contains step-style instruction lines. Keep content frontend-only dummy text with no backend dependency."
-        },
-        {
-          "path": "frontend/src/pages/ExerciseInfo.tsx",
-          "operation": "modify",
-          "description": "Align Exercise Info rendering so the updated Equal Breathing section names ('BENEFITS', 'METHOD') display as collapsible sections (no empty states)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "summary": "Add a bottom “BEGIN EXERCISE” CTA that starts the viewed breathing exercise in Player with the saved per-exercise duration; hide/replace for non-playable entries.",
-      "acceptanceCriteria": [
-        "A “BEGIN EXERCISE” button is visible near the bottom of /exercise-info (for breathing exercises).",
-        "Tapping “BEGIN EXERCISE” navigates to /player with the correct pattern (matching the current exerciseId) and includes the saved per-exercise duration (via existing local persistence hook).",
-        "If the exerciseId does not correspond to a playable breathing pattern (e.g., breath-holding-test), the button is hidden or replaced with an appropriate action that does not break navigation."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/ExerciseInfo.tsx",
-          "operation": "modify",
-          "description": "Add a bottom primary CTA labeled “BEGIN EXERCISE” and wire it to navigate to /player for playable breathing exercises by mapping the current exerciseId to the corresponding PRESET_PATTERNS entry and theme color, and pulling the saved duration via the existing usePerExerciseDuration hook. Hide the CTA (or replace with a safe non-breaking action) when the exerciseId is not a playable breathing pattern (e.g., 'breath-holding-test'). Use shadcn/ui Button for the primary CTA; verify the component's usage instructions before implementing."
+          "description": "In the shared Layout header, change the centered <h1> title text from “Breathe” to “ZenBreathe” without altering any surrounding header logic (Home-only icons, spacing placeholders, or footer visibility behavior)."
         }
       ]
     }

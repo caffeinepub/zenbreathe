@@ -8,6 +8,14 @@ import { AmbientAudioController } from '../lib/ambientAudio';
 import { addBreathingSession } from '../lib/localStorageStore';
 import { cancelSpeech, setVoiceVolume } from '../lib/voiceGuidance';
 import { validateDuration, shouldAllowAutoStop } from '../lib/playerDurationGuards';
+import { 
+  getAmbientMode, 
+  setAmbientMode, 
+  getAmbientVolume, 
+  setAmbientVolume as persistAmbientVolume,
+  getGuidedMeditationEnabled,
+  type AmbientMode 
+} from '../lib/settingsStore';
 import BreathingCircle from '../components/BreathingCircle';
 import VerticalVolumeControl from '../components/VerticalVolumeControl';
 
@@ -22,8 +30,6 @@ const DEFAULT_PATTERN: BreathingPattern = {
   holdBottom: 0,
 };
 
-type AmbientMode = 'off' | 'rain' | 'waves';
-
 export default function Player() {
   const navigate = useNavigate();
   const search = useSearch({ from: '/player' }) as { pattern?: string; color?: string; duration?: string };
@@ -32,13 +38,21 @@ export default function Player() {
   const [themeColor, setThemeColor] = useState<string | undefined>(undefined);
   const [isPatternLoaded, setIsPatternLoaded] = useState(false);
   const [targetDuration, setTargetDuration] = useState<number>(0);
-  const [ambientMode, setAmbientMode] = useState<AmbientMode>('off');
+  const [ambientMode, setAmbientModeState] = useState<AmbientMode>('off');
   const [voiceVolume, setVoiceVolumeState] = useState(80);
-  const [ambientVolume, setAmbientVolume] = useState(50);
+  const [ambientVolume, setAmbientVolumeState] = useState(50);
   const [sessionLogged, setSessionLogged] = useState(false);
+  const [guidedMeditationEnabled, setGuidedMeditationEnabled] = useState(true);
   
   const audioControllerRef = useRef<AmbientAudioController | null>(null);
   const sessionStartRef = useRef<number>(0);
+
+  // Load persisted settings on mount
+  useEffect(() => {
+    setAmbientModeState(getAmbientMode());
+    setAmbientVolumeState(getAmbientVolume());
+    setGuidedMeditationEnabled(getGuidedMeditationEnabled());
+  }, []);
 
   useEffect(() => {
     if (search.pattern) {
@@ -58,9 +72,16 @@ export default function Player() {
     }
     
     if (search.duration) {
-      const rawDuration = parseInt(search.duration);
-      const validatedDuration = validateDuration(rawDuration);
-      setTargetDuration(validatedDuration);
+      // Parse duration as a number and validate it
+      const rawDuration = Number(search.duration);
+      if (!isNaN(rawDuration) && rawDuration > 0) {
+        const validatedDuration = validateDuration(rawDuration);
+        setTargetDuration(validatedDuration);
+      } else {
+        console.warn('Invalid duration provided:', search.duration);
+        const validatedDuration = validateDuration(undefined);
+        setTargetDuration(validatedDuration);
+      }
     } else {
       // No duration provided, use safe fallback
       const validatedDuration = validateDuration(undefined);
@@ -81,7 +102,10 @@ export default function Player() {
   }, [voiceVolume]);
 
   // Always call hooks at the top level
-  const engine = useBreathingEngine(pattern, { voiceVolume });
+  const engine = useBreathingEngine(pattern, { 
+    voiceVolume,
+    guidedMeditationEnabled 
+  });
   useWakeLock(engine.state.isRunning && !engine.state.isPaused);
 
   // Compute cycle length from the active pattern
@@ -108,9 +132,15 @@ export default function Player() {
     }
   }, [engine.state.isRunning, engine.state.isPaused, engine.state.totalElapsed, targetDuration, pattern.name, sessionLogged, engine]);
 
-  // Handle ambient mode changes
+  // Handle ambient mode changes with guided meditation gating
   useEffect(() => {
     if (!audioControllerRef.current) return;
+    
+    // Gate: only play ambient if guided meditation is ON
+    if (!guidedMeditationEnabled) {
+      audioControllerRef.current.stopAll();
+      return;
+    }
     
     switch (ambientMode) {
       case 'rain':
@@ -123,7 +153,7 @@ export default function Player() {
         audioControllerRef.current.stopAll();
         break;
     }
-  }, [ambientMode]);
+  }, [ambientMode, guidedMeditationEnabled]);
 
   // Handle ambient volume changes
   useEffect(() => {
@@ -153,6 +183,16 @@ export default function Player() {
     sessionStartRef.current = Date.now();
     setSessionLogged(false);
     engine.start();
+  };
+
+  const handleAmbientModeChange = (mode: AmbientMode) => {
+    setAmbientModeState(mode);
+    setAmbientMode(mode);
+  };
+
+  const handleAmbientVolumeChange = (volume: number) => {
+    setAmbientVolumeState(volume);
+    persistAmbientVolume(volume);
   };
 
   // Format countdown timer (mm:ss)
@@ -241,7 +281,7 @@ export default function Player() {
           <div className="flex-shrink-0">
             <VerticalVolumeControl
               value={ambientVolume}
-              onChange={setAmbientVolume}
+              onChange={handleAmbientVolumeChange}
               label="Ambient sound volume"
               icon={<Music className="h-5 w-5" />}
             />

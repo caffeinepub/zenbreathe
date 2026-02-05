@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 86,
+  "projectStateVersion": 128,
   "summary": "ZenBreathe is a minimalist React + Tailwind breathing companion (mobile/PWA-oriented) featuring preset and custom breathing patterns, a full-screen guided breathing player with an animated countdown circle, a pre-session intro sequence with spoken prompts, voice guidance and haptics during phases, wake-lock support, optional ambient audio (rain/waves), local-only persistence for session history and breath-hold attempts, and a stats dashboard (weekly minutes, breath-hold trend, recent sessions). The repo also contains scaffolding for Internet Identity authentication and an ICP backend actor, but the included Motoko canister is currently empty.",
   "existing_features": [
     {
@@ -313,42 +313,62 @@
       "version": 1
     },
     {
-      "id": "feature-update-the-exercise-info-page-header-navigation-control-to-use-a-close-x-icon-instead-of-the-current-back-arrow-ui-and-ensure-it-correctly-exits-the-exercise-info-screen-when-tapped-go-back-if-browser-history-exists-otherwise-navigate-to-home",
-      "title": "Update the Exercise Info page header navigation control to use a close “X” icon (instead of the current back arrow UI) and ensure it correctly exits the Exercise Info screen when tapped (go back if browser history exists; otherwise navigate to Home).",
+      "id": "IF-28",
+      "title": "Exercise Info page populated with structured dummy content via centralized content module",
+      "synonyms": [
+        "exerciseInfoContent",
+        "ExerciseInfo content data"
+      ],
+      "description": "Exercise Info screen now renders non-empty exercise details using a centralized content source (frontend/src/lib/exerciseInfoContent.ts), providing structured dummy data organized for the page layout instead of an empty screen.",
+      "reqIds": [
+        "AR-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-29",
+      "title": "Cycle-based Change Duration dialog with +/- controls and preset cycle options",
+      "synonyms": [
+        "BreathCyclesDurationDialog",
+        "Cycles duration picker"
+      ],
+      "description": "The Change Duration dialog now defaults to selecting 4 cycles and provides increment/decrement controls to adjust cycle count, plus selectable preset cycle options. Total duration is computed from the active breathing pattern’s full cycle length (inhale+hold+exhale+hold).",
+      "reqIds": [
+        "AR-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-30",
+      "title": "Launch/Player session uses user-selected duration from Change Duration dialog",
+      "synonyms": [
+        "Apply selected duration",
+        "Per-exercise duration applied"
+      ],
+      "description": "Selected duration from the Change Duration dialog is now used when launching and playing sessions (including from breathing tabs/cards) instead of falling back to the default 5-minute duration.",
+      "reqIds": [
+        "AR-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-31",
+      "title": "Custom pattern supports selecting number of cycles",
+      "synonyms": [
+        "Custom cycles count",
+        "Custom page cycles option"
+      ],
+      "description": "Custom breathing pattern flow includes a simple number-of-cycles option (increment/decrement) to derive total session duration from the custom pattern’s full cycle length.",
+      "reqIds": [
+        "AR-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-change-the-app-s-top-header-title-text-in-the-shared-layout-to-display-zenbreathe-instead-of-breathe",
+      "title": "Change the app’s top header/title text in the shared layout to display “ZenBreathe” instead of “Breathe”.",
       "reqIds": [
         "REQ-9"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-ensure-the-exercise-info-screen-is-visibly-populated-non-empty-when-opened-from-the-home-card-info-icon-using-the-existing-exercise-info-content-mapping-keyed-by-the-exerciseid-search-param",
-      "title": "Ensure the Exercise Info screen is visibly populated (non-empty) when opened from the Home card Info icon, using the existing EXERCISE_INFO_CONTENT mapping keyed by the exerciseId search param.",
-      "reqIds": [
-        "REQ-10"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-adjust-the-exercise-info-layout-and-section-styling-to-match-the-provided-screenshot-title-centered-a-short-intro-paragraph-horizontal-divider-lines-and-collapsible-sections-with-uppercase-headings-e-g-benefits-method-and-a-right-side-chevron-indicator-reflecting-open-closed-state",
-      "title": "Adjust the Exercise Info layout and section styling to match the provided screenshot: title centered, a short intro paragraph, horizontal divider lines, and collapsible sections with uppercase headings (e.g., “BENEFITS”, “METHOD”) and a right-side chevron indicator reflecting open/closed state.",
-      "reqIds": [
-        "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-dummy-content-structure-for-the-equal-breathing-exercise-info-entry-so-it-matches-the-screenshot-s-section-naming-and-content-intent-at-minimum-benefits-and-method-with-step-like-instructions",
-      "title": "Update the dummy content structure for the “Equal Breathing” Exercise Info entry so it matches the screenshot’s section naming and content intent (at minimum: “BENEFITS” and “METHOD” with step-like instructions).",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-bottom-primary-cta-button-on-the-exercise-info-screen-labeled-begin-exercise-that-starts-the-currently-viewed-exercise-navigates-to-player-with-the-corresponding-breathing-pattern-and-the-user-s-saved-duration-for-that-exercise",
-      "title": "Add a bottom primary CTA button on the Exercise Info screen labeled “BEGIN EXERCISE” that starts the currently viewed exercise (navigates to /player with the corresponding breathing pattern and the user’s saved duration for that exercise).",
-      "reqIds": [
-        "REQ-13"
       ],
       "version": 1
     }
@@ -415,8 +435,20 @@
       "status": "pending"
     },
     {
-      "id": "AR-11",
-      "summary": "Fix Exercise Info page: it’s still empty when opened from the card Info icon; populate it with content/data laid out like the provided reference",
+      "id": "AR-14",
+      "summary": "Update voice guidance so it speaks phase prompts (“Breathe in”, “Hold”, “Breathe out”) instead of counting numbers",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Add Settings option to select ambient sound (off/rain/waves) and play it only when guided meditation is ON; right-side volume slider should control ambient volume",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Update the top header/title text to consistently display “ZenBreathe”",
       "reqIds": [],
       "status": "pending"
     }
@@ -442,10 +474,9 @@
     "There are two global CSS files (frontend/src/index.css and frontend/index.css); only src/index.css is imported, which may leave dead/confusing styles.",
     "Current deployed build reportedly has fully broken breathing playback (user requesting rollback to older version).",
     "Breathing circle expansion currently overlaps/covers the external border; needs ~5% margin between circle and border during animation.",
-    "During an active Player session, the Start button visibility behavior is incorrect (should hide during session and reappear after session ends).",
-    "Exercise Info page opens but renders empty content; needs data/content populated to match the desired reference layout."
+    "During an active Player session, the Start button visibility behavior is incorrect (should hide during session and reappear after session ends)."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "gameProjectType": "none",
   "projectName": "ZenBreathe",
   "clarification_mode": "instant",

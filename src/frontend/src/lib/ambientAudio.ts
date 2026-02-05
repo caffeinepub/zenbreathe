@@ -4,8 +4,8 @@ export class AmbientAudioController {
   private currentVolume: number = 0.5;
 
   constructor() {
-    this.rainAudio = new Audio('/assets/ambient/rain.mp3');
-    this.wavesAudio = new Audio('/assets/ambient/waves.mp3');
+    this.rainAudio = new Audio('https://res.cloudinary.com/dadxjpvt6/video/upload/v1770118267/relaxing-rain-444802_f1mibw.mp3');
+    this.wavesAudio = new Audio('https://res.cloudinary.com/dadxjpvt6/video/upload/v1770118338/gentle-ocean-waves-mix-2018-19693_s6b584.mp3');
     
     if (this.rainAudio) {
       this.rainAudio.loop = true;

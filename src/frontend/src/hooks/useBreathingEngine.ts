@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { BreathingPattern } from '../lib/breathingPatterns';
-import { speak, setVoiceVolume, speakQueued, cancelSpeech } from '../lib/voiceGuidance';
+import { speak, setVoiceVolume, cancelSpeech } from '../lib/voiceGuidance';
 import { useHaptics } from './useHaptics';
 
 export type Phase = 'inhale' | 'holdTop' | 'exhale' | 'holdBottom';
@@ -15,6 +15,7 @@ export interface BreathingState {
 
 export interface BreathingEngineOptions {
   voiceVolume?: number;
+  guidedMeditationEnabled?: boolean;
 }
 
 export function useBreathingEngine(pattern: BreathingPattern, options?: BreathingEngineOptions) {
@@ -32,8 +33,6 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
   const phaseStartRef = useRef<number>(0);
   const pausedTimeRef = useRef<number>(0);
   const totalPausedDurationRef = useRef<number>(0);
-  const spokenCountdownNumbers = useRef<Set<number>>(new Set());
-  const isInitialCountdown = useRef<boolean>(false);
 
   // Update voice volume when it changes
   useEffect(() => {
@@ -57,11 +56,11 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
     }
   }, [pattern]);
 
-  const getPhaseLabel = useCallback((phase: Phase): string => {
+  const getPhaseGuidance = useCallback((phase: Phase): string => {
     switch (phase) {
-      case 'inhale': return 'Inhale';
+      case 'inhale': return 'Breathe in';
       case 'holdTop': return 'Hold';
-      case 'exhale': return 'Exhale';
+      case 'exhale': return 'Breathe out';
       case 'holdBottom': return 'Hold';
     }
   }, []);
@@ -76,13 +75,13 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       return;
     }
 
-    // Mark that we're no longer in initial countdown
-    isInitialCountdown.current = false;
-
-    // Announce phase
-    speak(getPhaseLabel(newPhase));
+    // Announce phase with guidance prompt only if guided meditation is enabled
+    const guidedEnabled = options?.guidedMeditationEnabled ?? true;
+    if (guidedEnabled) {
+      speak(getPhaseGuidance(newPhase));
+    }
     
-    // Haptic feedback
+    // Haptic feedback (always active regardless of voice guidance)
     vibrate(50);
     
     phaseStartRef.current = Date.now();
@@ -92,14 +91,12 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       phase: newPhase,
       timeRemaining: duration,
     }));
-  }, [getPhaseDuration, getNextPhase, getPhaseLabel, vibrate]);
+  }, [getPhaseDuration, getNextPhase, getPhaseGuidance, vibrate, options?.guidedMeditationEnabled]);
 
   const start = useCallback(() => {
     startTimeRef.current = Date.now();
     phaseStartRef.current = Date.now();
     totalPausedDurationRef.current = 0;
-    spokenCountdownNumbers.current = new Set();
-    isInitialCountdown.current = true;
     
     setState({
       phase: 'inhale',
@@ -109,9 +106,13 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       totalElapsed: 0,
     });
 
-    // No initial announcement - countdown will handle it
+    // Announce initial phase only if guided meditation is enabled
+    const guidedEnabled = options?.guidedMeditationEnabled ?? true;
+    if (guidedEnabled) {
+      speak(getPhaseGuidance('inhale'));
+    }
     vibrate(50);
-  }, [pattern.inhale, vibrate]);
+  }, [pattern.inhale, vibrate, getPhaseGuidance, options?.guidedMeditationEnabled]);
 
   const pause = useCallback(() => {
     if (intervalRef.current) {
@@ -177,15 +178,6 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       const phaseElapsed = (now - phaseStartRef.current) / 1000;
       const phaseDuration = getPhaseDuration(state.phase);
       const timeRemaining = Math.max(0, phaseDuration - phaseElapsed);
-
-      // Handle initial countdown speech (4 3 2 1)
-      if (isInitialCountdown.current && state.phase === 'inhale') {
-        const countdownNumber = Math.ceil(timeRemaining);
-        if (countdownNumber >= 1 && countdownNumber <= 4 && !spokenCountdownNumbers.current.has(countdownNumber)) {
-          spokenCountdownNumbers.current.add(countdownNumber);
-          speakQueued(countdownNumber.toString());
-        }
-      }
 
       if (timeRemaining <= 0) {
         // Transition to next phase

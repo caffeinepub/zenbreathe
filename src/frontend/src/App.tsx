@@ -45,7 +45,7 @@ function Layout() {
           
           {!isHomePage && <div className="w-8 sm:w-10" />}
           
-          <h1 className="text-lg sm:text-xl font-semibold text-foreground">Breathe</h1>
+          <h1 className="text-lg sm:text-xl font-semibold text-foreground">ZenBreathe</h1>
           
           {isHomePage && (
             <button

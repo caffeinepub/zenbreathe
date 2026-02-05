@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getPerExerciseDurations, setPerExerciseDuration as savePerExerciseDuration } from '../lib/localStorageStore';
 
 const DEFAULT_DURATION = 300; // 5 minutes in seconds
 
 export function usePerExerciseDuration() {
-  const [durations, setDurations] = useState<Record<string, number>>({});
-
-  useEffect(() => {
-    const stored = getPerExerciseDurations();
-    setDurations(stored);
-  }, []);
+  // Initialize state synchronously from localStorage using lazy initializer
+  const [durations, setDurations] = useState<Record<string, number>>(() => {
+    return getPerExerciseDurations();
+  });
 
   const getDuration = (exerciseId: string): number => {
-    return durations[exerciseId] || DEFAULT_DURATION;
+    // Use nullish coalescing to avoid issues with falsy values
+    return durations[exerciseId] ?? DEFAULT_DURATION;
   };
 
   const setDuration = (exerciseId: string, duration: number) => {

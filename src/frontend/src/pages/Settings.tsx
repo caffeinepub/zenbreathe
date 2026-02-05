@@ -1,13 +1,41 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Bell, Volume2, Vibrate, Moon, Smartphone } from 'lucide-react';
+import { 
+  getAmbientMode, 
+  setAmbientMode, 
+  getGuidedMeditationEnabled, 
+  setGuidedMeditationEnabled,
+  type AmbientMode 
+} from '@/lib/settingsStore';
 
 export default function Settings() {
   const navigate = useNavigate();
+  const [ambientSound, setAmbientSound] = useState<AmbientMode>('off');
+  const [voiceGuidance, setVoiceGuidance] = useState(true);
+
+  // Load settings on mount
+  useEffect(() => {
+    setAmbientSound(getAmbientMode());
+    setVoiceGuidance(getGuidedMeditationEnabled());
+  }, []);
+
+  const handleAmbientSoundChange = (value: string) => {
+    const mode = value as AmbientMode;
+    setAmbientSound(mode);
+    setAmbientMode(mode);
+  };
+
+  const handleVoiceGuidanceChange = (checked: boolean) => {
+    setVoiceGuidance(checked);
+    setGuidedMeditationEnabled(checked);
+  };
 
   return (
     <div className="container max-w-2xl py-6 px-4 space-y-6">
@@ -39,17 +67,30 @@ export default function Settings() {
                 Spoken instructions during exercises
               </p>
             </div>
-            <Switch id="voice-guidance" defaultChecked />
+            <Switch 
+              id="voice-guidance" 
+              checked={voiceGuidance}
+              onCheckedChange={handleVoiceGuidanceChange}
+            />
           </div>
           <Separator />
           <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
+            <div className="space-y-0.5 flex-1">
               <Label htmlFor="ambient-sound">Ambient Sounds</Label>
               <p className="text-sm text-muted-foreground">
-                Background nature sounds
+                Background nature sounds during guided meditation
               </p>
             </div>
-            <Switch id="ambient-sound" defaultChecked />
+            <Select value={ambientSound} onValueChange={handleAmbientSoundChange}>
+              <SelectTrigger id="ambient-sound" className="w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="off">Off</SelectItem>
+                <SelectItem value="rain">Rain</SelectItem>
+                <SelectItem value="waves">Waves</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>

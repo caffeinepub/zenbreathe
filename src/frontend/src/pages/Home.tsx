@@ -77,6 +77,7 @@ export default function Home() {
             onDurationChange={(newDuration) => setDuration(tile.pattern.id, newDuration)}
             onStart={() => handleStartExercise(tile.pattern, tile.themeColor)}
             onInfoClick={() => handleNavigateToInfo(tile.pattern.id)}
+            pattern={tile.pattern}
           />
         ))}
         
