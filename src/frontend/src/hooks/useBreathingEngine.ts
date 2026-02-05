@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { BreathingPattern } from '../lib/breathingPatterns';
-import { speak, setVoiceVolume, cancelSpeech } from '../lib/voiceGuidance';
+import { speak, cancelSpeech } from '../lib/voiceGuidance';
 import { useHaptics } from './useHaptics';
 
 export type Phase = 'inhale' | 'holdTop' | 'exhale' | 'holdBottom';
@@ -33,13 +33,6 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
   const phaseStartRef = useRef<number>(0);
   const pausedTimeRef = useRef<number>(0);
   const totalPausedDurationRef = useRef<number>(0);
-
-  // Update voice volume when it changes
-  useEffect(() => {
-    if (options?.voiceVolume !== undefined) {
-      setVoiceVolume(options.voiceVolume / 100);
-    }
-  }, [options?.voiceVolume]);
 
   const getNextPhase = useCallback((currentPhase: Phase): Phase => {
     const sequence: Phase[] = ['inhale', 'holdTop', 'exhale', 'holdBottom'];
@@ -78,7 +71,11 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
     // Announce phase with guidance prompt only if guided meditation is enabled
     const guidedEnabled = options?.guidedMeditationEnabled ?? true;
     if (guidedEnabled) {
-      speak(getPhaseGuidance(newPhase));
+      const normalizedVolume = (options?.voiceVolume ?? 80) / 100;
+      // Only speak if volume is above 0
+      if (normalizedVolume > 0) {
+        speak(getPhaseGuidance(newPhase));
+      }
     }
     
     // Haptic feedback (always active regardless of voice guidance)
@@ -91,7 +88,7 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       phase: newPhase,
       timeRemaining: duration,
     }));
-  }, [getPhaseDuration, getNextPhase, getPhaseGuidance, vibrate, options?.guidedMeditationEnabled]);
+  }, [getPhaseDuration, getNextPhase, getPhaseGuidance, vibrate, options?.guidedMeditationEnabled, options?.voiceVolume]);
 
   const start = useCallback(() => {
     startTimeRef.current = Date.now();
@@ -109,10 +106,14 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
     // Announce initial phase only if guided meditation is enabled
     const guidedEnabled = options?.guidedMeditationEnabled ?? true;
     if (guidedEnabled) {
-      speak(getPhaseGuidance('inhale'));
+      const normalizedVolume = (options?.voiceVolume ?? 80) / 100;
+      // Only speak if volume is above 0
+      if (normalizedVolume > 0) {
+        speak(getPhaseGuidance('inhale'));
+      }
     }
     vibrate(50);
-  }, [pattern.inhale, vibrate, getPhaseGuidance, options?.guidedMeditationEnabled]);
+  }, [pattern.inhale, vibrate, getPhaseGuidance, options?.guidedMeditationEnabled, options?.voiceVolume]);
 
   const pause = useCallback(() => {
     if (intervalRef.current) {
@@ -120,7 +121,7 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       intervalRef.current = null;
     }
     
-    // Cancel any ongoing speech
+    // Cancel any ongoing speech on pause
     cancelSpeech();
     
     pausedTimeRef.current = Date.now();
@@ -152,7 +153,7 @@ export function useBreathingEngine(pattern: BreathingPattern, options?: Breathin
       intervalRef.current = null;
     }
     
-    // Cancel any ongoing speech
+    // Cancel any ongoing speech on stop
     cancelSpeech();
     
     setState(prev => ({

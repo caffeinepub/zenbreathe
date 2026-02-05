@@ -1,33 +1,88 @@
 {
   "kind": "build_request",
-  "title": "Update header title to ZenBreathe",
-  "priority": "normal",
+  "title": "Fix broken in-session guided voice prompts in Player (phase-based prompts, no pre-session intro)",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-9",
-      "text": "Change the app’s top header/title text in the shared layout to display “ZenBreathe” instead of “Breathe”.",
+      "text": "Investigate and fix the regression where in-session guided voice prompts do not play during an active breathing session in the Player, while ambient rain/waves still work.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-4",
+          "msg-10",
+          "msg-11"
         ],
         "quotes": [
-          "change the name on the top to ZenBreathe"
+          "i can hear the sounds of rain and wavess, but still no guided exercise insturctions. it was working before (like initial stages) - what is the issue? its definitely not a browser issue",
+          "1. in-session ones, right now there is no pre-session stuff",
+          "go ahead"
         ]
       },
       "acceptanceCriteria": [
-        "When viewing any route that shows the shared header (e.g., Home, Stats, Custom, Settings, About), the centered header title reads “ZenBreathe”.",
-        "No other header layout behavior changes (e.g., Home-only icons, spacing) aside from the title text."
+        "Starting a session results in audible phase prompts during the session (not just ambient audio).",
+        "The issue is resolved without requiring any browser-specific workaround steps from the user."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Align the fixed voice guidance behavior with the new Player flow: no pre-session intro; speak phase prompts during the session as short phrases (\"Breathe in\", \"Hold\", \"Breathe out\") at phase transitions, skipping phases with 0 duration.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10"
+        ],
+        "quotes": [
+          "ix it according to the new Player flow"
+        ]
+      },
+      "acceptanceCriteria": [
+        "There is no pre-session intro voice sequence before the session begins.",
+        "On each phase transition during a running, unpaused session, the app speaks the correct phase phrase: inhale -> \"Breathe in\", holdTop/holdBottom -> \"Hold\", exhale -> \"Breathe out\".",
+        "If a phase duration is 0 seconds (e.g., hold phases in a 4-0-4 pattern), no prompt is spoken for that skipped phase."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Ensure the Player voice guidance volume control reliably affects spoken prompts during the session (including after changing the slider while a session is running).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-11"
+        ]
+      },
+      "acceptanceCriteria": [
+        "With voice guidance volume set high, phase prompts are clearly audible.",
+        "With voice guidance volume set to 0, phase prompts are effectively muted.",
+        "Changing the voice guidance volume slider during a session takes effect for subsequent prompts without needing to restart the session."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Prevent Player lifecycle actions from unintentionally suppressing in-session voice prompts (e.g., avoid canceling speech repeatedly or at incorrect times) while still cancelling speech appropriately when the user exits the Player or pauses/stops the session.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-10"
+        ]
+      },
+      "acceptanceCriteria": [
+        "During normal in-session phase transitions, voice prompts are not accidentally cancelled before the user can hear them.",
+        "When the user exits the Player (back button), any ongoing speech is stopped.",
+        "If the session is paused/stopped (where applicable in the current UI), any ongoing speech is stopped."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/components/ui (shadcn UI components are read-only).",
-    "Do not edit any paths listed in SYSTEM_CONTEXT.frontend.immutablePaths."
+    "Frontend must remain React + TypeScript + Tailwind + React Query.",
+    "Do not edit files under frontend/src/components/ui (compose them instead).",
+    "Do not edit any frontend paths listed as immutable in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Do not rename or rebrand other in-app text (e.g., About page headings/body copy) unless explicitly requested.",
-    "Do not change PWA manifest metadata or HTML document title (these already use “ZenBreathe”)."
+    "Implementing new backend functionality (the Motoko canister can remain unchanged).",
+    "Adding third-party text-to-speech services or external API integrations.",
+    "Reintroducing the pre-session intro flow."
   ],
   "imageRequirements": {
     "required": [],

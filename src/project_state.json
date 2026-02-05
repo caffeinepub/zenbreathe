@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 128,
+  "projectStateVersion": 136,
   "summary": "ZenBreathe is a minimalist React + Tailwind breathing companion (mobile/PWA-oriented) featuring preset and custom breathing patterns, a full-screen guided breathing player with an animated countdown circle, a pre-session intro sequence with spoken prompts, voice guidance and haptics during phases, wake-lock support, optional ambient audio (rain/waves), local-only persistence for session history and breath-hold attempts, and a stats dashboard (weekly minutes, breath-hold trend, recent sessions). The repo also contains scaffolding for Internet Identity authentication and an ICP backend actor, but the included Motoko canister is currently empty.",
   "existing_features": [
     {
@@ -365,10 +365,34 @@
       "version": 1
     },
     {
-      "id": "feature-change-the-app-s-top-header-title-text-in-the-shared-layout-to-display-zenbreathe-instead-of-breathe",
-      "title": "Change the app’s top header/title text in the shared layout to display “ZenBreathe” instead of “Breathe”.",
+      "id": "feature-investigate-and-fix-the-regression-where-in-session-guided-voice-prompts-do-not-play-during-an-active-breathing-session-in-the-player-while-ambient-rain-waves-still-work",
+      "title": "Investigate and fix the regression where in-session guided voice prompts do not play during an active breathing session in the Player, while ambient rain/waves still work.",
       "reqIds": [
         "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-align-the-fixed-voice-guidance-behavior-with-the-new-player-flow-no-pre-session-intro-speak-phase-prompts-during-the-session-as-short-phrases-breathe-in-hold-breathe-out-at-phase-transitions-skipping-phases-with-0-duration",
+      "title": "Align the fixed voice guidance behavior with the new Player flow: no pre-session intro; speak phase prompts during the session as short phrases (\"Breathe in\", \"Hold\", \"Breathe out\") at phase transitions, skipping phases with 0 duration.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-player-voice-guidance-volume-control-reliably-affects-spoken-prompts-during-the-session-including-after-changing-the-slider-while-a-session-is-running",
+      "title": "Ensure the Player voice guidance volume control reliably affects spoken prompts during the session (including after changing the slider while a session is running).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-prevent-player-lifecycle-actions-from-unintentionally-suppressing-in-session-voice-prompts-e-g-avoid-canceling-speech-repeatedly-or-at-incorrect-times-while-still-cancelling-speech-appropriately-when-the-user-exits-the-player-or-pauses-stops-the-session",
+      "title": "Prevent Player lifecycle actions from unintentionally suppressing in-session voice prompts (e.g., avoid canceling speech repeatedly or at incorrect times) while still cancelling speech appropriately when the user exits the Player or pauses/stops the session.",
+      "reqIds": [
+        "REQ-12"
       ],
       "version": 1
     }
@@ -377,12 +401,6 @@
     {
       "id": "AR-1",
       "summary": "Revert/rollback to the older working version because breathing playback is fully broken in the current deployed build",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Fix regressions since last broken build: Stop button in main Player session does nothing, phase voice guidance missing during inhale/exhale, and pre-session intro flow is missing (shows Start button instead)",
       "reqIds": [],
       "status": "pending"
     },
@@ -441,16 +459,10 @@
       "status": "pending"
     },
     {
-      "id": "AR-15",
-      "summary": "Add Settings option to select ambient sound (off/rain/waves) and play it only when guided meditation is ON; right-side volume slider should control ambient volume",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
       "id": "AR-16",
-      "summary": "Update the top header/title text to consistently display “ZenBreathe”",
+      "summary": "Investigate and fix broken in-session guided voice prompts, aligning with the new Player flow (no pre-session intro; speak phase prompts like “Breathe in/Hold/Breathe out”)",
       "reqIds": [],
-      "status": "pending"
+      "status": "in_progress"
     }
   ],
   "architectural_notes": [
@@ -466,7 +478,6 @@
     "User preference update: Player should not run a pre-session intro by default; session begins immediately on Start."
   ],
   "known_issues": [
-    "Ambient audio mode (off/rain/waves) exists in Player state, but there is no UI to change ambientMode, so rain/waves playback is unreachable in normal use.",
     "Settings toggles are placeholder UI only (not persisted and not wired to actual behaviors like voice/haptics/wake lock/ambient audio).",
     "Backend canister (backend/main.mo) is an empty actor; no server-side features are implemented.",
     "localStorage persistence has no schema validation/migrations and stored arrays can grow without bounds.",
@@ -474,11 +485,12 @@
     "There are two global CSS files (frontend/src/index.css and frontend/index.css); only src/index.css is imported, which may leave dead/confusing styles.",
     "Current deployed build reportedly has fully broken breathing playback (user requesting rollback to older version).",
     "Breathing circle expansion currently overlaps/covers the external border; needs ~5% margin between circle and border during animation.",
-    "During an active Player session, the Start button visibility behavior is incorrect (should hide during session and reappear after session ends)."
+    "During an active Player session, the Start button visibility behavior is incorrect (should hide during session and reappear after session ends).",
+    "In-session guided voice phase prompts are not playing (pre-session intro is not expected per the new Player flow)."
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "gameProjectType": "none",
   "projectName": "ZenBreathe",
-  "clarification_mode": "instant",
+  "clarification_mode": "pro",
   "clarification_rounds": 0
 }

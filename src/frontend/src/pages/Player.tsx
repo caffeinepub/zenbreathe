@@ -6,7 +6,7 @@ import { useBreathingEngine } from '../hooks/useBreathingEngine';
 import { useWakeLock } from '../hooks/useWakeLock';
 import { AmbientAudioController } from '../lib/ambientAudio';
 import { addBreathingSession } from '../lib/localStorageStore';
-import { cancelSpeech, setVoiceVolume } from '../lib/voiceGuidance';
+import { cancelSpeech } from '../lib/voiceGuidance';
 import { validateDuration, shouldAllowAutoStop } from '../lib/playerDurationGuards';
 import { 
   getAmbientMode, 
@@ -96,11 +96,6 @@ export default function Player() {
     };
   }, []);
 
-  // Update voice volume in the guidance system
-  useEffect(() => {
-    setVoiceVolume(voiceVolume / 100);
-  }, [voiceVolume]);
-
   // Always call hooks at the top level
   const engine = useBreathingEngine(pattern, { 
     voiceVolume,
@@ -163,6 +158,7 @@ export default function Player() {
   }, [ambientVolume]);
 
   const handleClose = () => {
+    // Cancel speech on exit
     cancelSpeech();
     
     if (engine.state.isRunning) {

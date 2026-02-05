@@ -1,20 +1,103 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Update shared header title to ZenBreathe",
+  "title": "Player: Restore in-session phase voice prompts (no pre-session intro) and stabilize volume + lifecycle behavior",
   "requirements": [
     {
       "id": "REQ-9",
-      "summary": "Update the shared layout header title text to display “ZenBreathe” instead of “Breathe” across all routes that show the header.",
+      "summary": "Fix regression preventing in-session phase voice prompts from playing while ambient audio still works.",
       "acceptanceCriteria": [
-        "When viewing any route that shows the shared header (e.g., Home, Stats, Custom, Settings, About), the centered header title reads “ZenBreathe”.",
-        "No other header layout behavior changes (e.g., Home-only icons, spacing) aside from the title text."
+        "Starting a session results in audible phase prompts during the session (not just ambient audio).",
+        "The issue is resolved without requiring any browser-specific workaround steps from the user."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/lib/voiceGuidance.ts",
           "operation": "modify",
-          "description": "In the shared Layout header, change the centered <h1> title text from “Breathe” to “ZenBreathe” without altering any surrounding header logic (Home-only icons, spacing placeholders, or footer visibility behavior)."
+          "description": "Harden speech synthesis behavior so phase prompts reliably play during sessions (e.g., avoid patterns that suppress speech, ensure synthesis is resumed when needed, and ensure speaking calls are not inadvertently neutralized)."
+        },
+        {
+          "path": "frontend/src/hooks/useBreathingEngine.ts",
+          "operation": "modify",
+          "description": "Adjust phase-prompt triggering to use the hardened voice guidance behavior and eliminate any timing/transition logic that can result in prompts never being heard during an active session."
+        },
+        {
+          "path": "frontend/src/pages/Player.tsx",
+          "operation": "modify",
+          "description": "Remove any redundant or conflicting voice-volume/speech wiring that could interfere with the breathing engine’s in-session prompt playback, keeping Player focused on session lifecycle + UI."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Align voice guidance with the new Player flow: no pre-session intro; speak short phase phrases only at phase transitions; skip 0-duration phases.",
+      "acceptanceCriteria": [
+        "There is no pre-session intro voice sequence before the session begins.",
+        "On each phase transition during a running, unpaused session, the app speaks the correct phase phrase: inhale -> \"Breathe in\", holdTop/holdBottom -> \"Hold\", exhale -> \"Breathe out\".",
+        "If a phase duration is 0 seconds (e.g., hold phases in a 4-0-4 pattern), no prompt is spoken for that skipped phase."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useBreathingEngine.ts",
+          "operation": "modify",
+          "description": "Ensure phase prompt text mapping is exactly: inhale -> \"Breathe in\", holdTop/holdBottom -> \"Hold\", exhale -> \"Breathe out\"; trigger prompts only at actual phase transitions during a running/unpaused session; and guarantee 0-duration phases are skipped without speaking."
+        },
+        {
+          "path": "frontend/src/pages/Player.tsx",
+          "operation": "modify",
+          "description": "Confirm Player start flow does not run any pre-session intro speech and that any UI/logic only initiates in-session phase prompts via the breathing engine once the session is started."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Make the Player voice guidance volume control reliably affect spoken prompts during the session, including after changing the slider mid-session.",
+      "acceptanceCriteria": [
+        "With voice guidance volume set high, phase prompts are clearly audible.",
+        "With voice guidance volume set to 0, phase prompts are effectively muted.",
+        "Changing the voice guidance volume slider during a session takes effect for subsequent prompts without needing to restart the session."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/voiceGuidance.ts",
+          "operation": "modify",
+          "description": "Ensure volume changes are applied consistently to subsequent speech utterances (including when changed while a session is running), and that a volume of 0 results in effectively muted prompts."
+        },
+        {
+          "path": "frontend/src/hooks/useBreathingEngine.ts",
+          "operation": "modify",
+          "description": "Normalize and apply the provided voice volume option in a single authoritative place so updates from the Player slider reliably affect subsequent prompts without requiring a restart."
+        },
+        {
+          "path": "frontend/src/pages/Player.tsx",
+          "operation": "modify",
+          "description": "Wire the voice guidance volume slider state so it updates the breathing engine’s voice volume option reliably during an active session (and avoid duplicated global volume setters that could desync behavior)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Prevent Player lifecycle actions from unintentionally suppressing in-session prompts, while still canceling speech appropriately on exit and pause/stop.",
+      "acceptanceCriteria": [
+        "During normal in-session phase transitions, voice prompts are not accidentally cancelled before the user can hear them.",
+        "When the user exits the Player (back button), any ongoing speech is stopped.",
+        "If the session is paused/stopped (where applicable in the current UI), any ongoing speech is stopped."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/voiceGuidance.ts",
+          "operation": "modify",
+          "description": "Separate 'speech cancellation' from 'speaking a new prompt' so normal phase transitions do not repeatedly cancel speech in a way that suppresses prompts, while preserving explicit cancellation support for exit/pause/stop flows."
+        },
+        {
+          "path": "frontend/src/hooks/useBreathingEngine.ts",
+          "operation": "modify",
+          "description": "Ensure pause/stop paths explicitly cancel ongoing speech, but normal phase-transition prompting does not prematurely cancel itself (or other just-started prompts) before it can be heard."
+        },
+        {
+          "path": "frontend/src/pages/Player.tsx",
+          "operation": "modify",
+          "description": "Cancel any ongoing speech when the user exits the Player (back button) and ensure unmount/cleanup does not repeatedly cancel speech during normal running transitions; keep cancellation aligned to explicit exit/pause/stop actions."
         }
       ]
     }

@@ -1,24 +1,71 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T00:07:18.890Z",
+  "generatedAt": "2026-02-05T00:20:56.301Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-9",
-        "summary": "Change the app’s top header/title text in the shared layout to display “ZenBreathe” instead of “Breathe”.",
+        "id": "REQ-10",
+        "summary": "Align the fixed voice guidance behavior with the new Player flow: no pre-session intro; speak phase prompts during the session as short phrases (\"Breathe in\", \"Hold\", \"Breathe out\") at phase transitions, skipping phases with 0 duration.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx"
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx"
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
+        ]
+      },
+      {
+        "id": "REQ-11",
+        "summary": "Ensure the Player voice guidance volume control reliably affects spoken prompts during the session (including after changing the slider while a session is running).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
+        ]
+      },
+      {
+        "id": "REQ-12",
+        "summary": "Prevent Player lifecycle actions from unintentionally suppressing in-session voice prompts (e.g., avoid canceling speech repeatedly or at incorrect times) while still cancelling speech appropriately when the user exits the Player or pauses/stops the session.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Investigate and fix the regression where in-session guided voice prompts do not play during an active breathing session in the Player, while ambient rain/waves still work.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/voiceGuidance.ts",
+          "frontend/src/hooks/useBreathingEngine.ts",
+          "frontend/src/pages/Player.tsx"
         ]
       }
     ]
@@ -28,7 +75,9 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
+    "frontend/src/hooks/useBreathingEngine.ts",
+    "frontend/src/lib/voiceGuidance.ts",
+    "frontend/src/pages/Player.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
